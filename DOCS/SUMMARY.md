@@ -2,8 +2,8 @@
 
 # World Config Mod — Project Summary
 
-**Status:** Active · tModLoader 1.4.4+ / net8.0 · **23/23 tests pass** · menu HUD + cursor verified in-game · custom world indicator live  
-**Last updated:** 2026-05-20
+**Status:** Active · tModLoader 1.4.4+ / net8.0 · **23/23 tests pass** · menu HUD + cursor verified in-game · custom world indicator live · V2 sidebar panel built  
+**Last updated:** 2026-05-20 (docs audit + GitHub README refresh)
 
 ## Quick links
 
@@ -20,7 +20,12 @@
 
 ## What this mod does
 
-Custom **World Config** on the New World screen: two-column UI (world size left, scrollable ores right). When **Use Custom Generation** is ON, controls:
+Custom **World Config** on the New World screen. Two UI panels (swap via in-panel buttons):
+
+- **V2 sidebar panel** *(default)* — compact sidebar nav (World / Shape / Features / Ores / Presets / Info), 22px dense rows, live summary strip, ore search filter, diff dots + vanilla % badges
+- **V1 legacy panel** — two-column layout (world size left, scrollable ores right)
+
+When **Use Custom Generation** is ON, controls:
 
 - **World size** — width/height sliders + 5 presets (Small → XXL)
 - **World shape** — cave depth ×, dungeon side (left/random/right)
@@ -44,6 +49,33 @@ Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects in
 - Custom dimensions below vanilla Small (4200×1200) cause world-gen crashes in vanilla `AddGenPasses` (hardcoded range inversions).
 - Multiplayer config sync not implemented.
 
+## [AMENDED 2026-05-20]: V2 visual polish pass 2 (shipped)
+
+| Change | Detail |
+|--------|--------|
+| Slider bar max width | Capped at 420px — was unbounded, stretched full panel width on wide screens |
+| Row height | 22→26px for breathing room between rows |
+| Label widths | 100–115px per-callsite; "Floating Islands" / "Life Crystals" no longer clip |
+| Info tab expansion | 12 sections covering mechanics, sizes, ore gen, stacking, limits, controls |
+
+## [AMENDED 2026-05-20]: V2 visual polish (shipped)
+
+| Change | Detail |
+|--------|--------|
+| Section heading scale | 0.85 bold → 0.70 non-bold in pill panel; prevents Terraria font blowout |
+| Info tab rewrite | Beginner-friendly: What it does, tab guide, slider legend, controls, heads-up |
+| Ore phases 2-col | 21 ores in 2-column grid; non-world-gen ores dimmed + asterisked |
+
+## [AMENDED 2026-05-20]: V2 sidebar panel (shipped)
+
+| File | Role |
+|------|------|
+| `UI/WorldConfigUIStateV2.cs` | New panel: sidebar nav + compact content + live summary |
+| `UI/Elements/UICompactSliderRow.cs` | 22px dense slider with diff dot + vanilla % badge |
+| `UI/Elements/UITextInput.cs` | Click-to-focus text input (ore filter) |
+| `Common/WorldGenConfig.cs` | `UseV2Panel` flag, default constants, diff count helpers |
+| `Common/Systems/UIInjectSystem.cs` | Holds both V1 + V2 states; `ReopenConfigMenu()` for mid-session swap |
+
 ## [AMENDED 2026-05-20]: Menu HUD + cursor (shipped)
 
 | Piece | Draw path |
@@ -54,6 +86,16 @@ Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects in
 | Config panel | `Main.MenuUI.SetState(WorldConfigUIState)`; input in `UpdateUI` + `PostUpdateInput` |
 
 Do **not** use `Main.screenWidth` for raw menu `SpriteBatch` rects (layout space). User-verified on 2560×1494.
+
+## [AMENDED 2026-05-20]: Docs audit
+
+| Finding | Action |
+|---------|--------|
+| README described V1 only; debug preset still said 1750×600 | README rewritten for GitHub (banner, V2, FeatureGen, 4200 min) |
+| ARCHITECTURE referenced `menuMode 31337` and 1750 debug size | Appended current MenuUI + V2 + FeatureGen amendment |
+| MODDING_GUIDE min width 1750 | Annotated — safe floor is 4200×1200 (`MinWidth`/`MinHeight`) |
+| AGENTS layout missing V2 / FeatureGen | Updated repo map + hook table |
+| `banner.svg` footer | Added CUSTOM ON badge, V2/feature footer line, v0.1 tag |
 
 ## [AMENDED 2026-05-19]: Docs + UI + scroll refresh
 

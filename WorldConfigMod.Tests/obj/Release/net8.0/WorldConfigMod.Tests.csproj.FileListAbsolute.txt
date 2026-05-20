@@ -96,3 +96,4 @@ c:\Users\home\Desktop\Terraria-World-Config-Mod\WorldConfigMod.Tests\obj\Release
 c:\Users\home\Desktop\Terraria-World-Config-Mod\WorldConfigMod.Tests\obj\Release\net8.0\WorldConfigMod.Tests.pdb
 c:\Users\home\Desktop\Terraria-World-Config-Mod\WorldConfigMod.Tests\obj\Release\net8.0\WorldConfigMod.Tests.genruntimeconfig.cache
 c:\Users\home\Desktop\Terraria-World-Config-Mod\WorldConfigMod.Tests\obj\Release\net8.0\ref\WorldConfigMod.Tests.dll
+C:\Users\home\Desktop\Terraria-World-Config-Mod\WorldConfigMod.Tests\obj\Release\net8.0\WorldConfigMod.Tests.sourcelink.json

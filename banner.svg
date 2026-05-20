@@ -60,6 +60,13 @@
     <text x="600" y="360" font-size="30" font-weight="600" fill="#d8e2ff" letter-spacing="3">Resize your world. Tune every ore.</text>
   </g>
 
+  <!-- Custom ON badge (matches in-game green indicator) -->
+  <g filter="url(#shadow)">
+    <rect x="888" y="388" width="168" height="36" rx="18" fill="#143d28" stroke="#7ad36a" stroke-width="2"/>
+    <circle cx="912" cy="406" r="6" fill="#7ad36a"/>
+    <text x="928" y="412" font-size="17" font-weight="700" fill="#b8f0c8" letter-spacing="2">CUSTOM ON</text>
+  </g>
+
   <!-- Slider mock -->
   <g transform="translate(300,430)">
     <rect x="0" y="0" width="600" height="120" rx="14" fill="#161a36" stroke="#5a73b4" stroke-width="1.5" opacity="0.95"/>
@@ -79,6 +86,7 @@
 
   <!-- Footer tag -->
   <g text-anchor="middle">
-    <text x="600" y="588" font-size="18" font-weight="700" fill="#7e95d6" letter-spacing="6">21 ORES · 5 SIZE PRESETS · CUSTOM WORLD GEN</text>
+    <text x="600" y="580" font-size="16" font-weight="700" fill="#7e95d6" letter-spacing="4">21 ORES · 5 PRESETS · CAVES · GEMS · V2 SIDEBAR UI</text>
+    <text x="600" y="604" font-size="14" font-weight="600" fill="#5a73b4" letter-spacing="3">tModLoader 1.4.4+ · WorldConfigMod v0.1</text>
   </g>
 </svg>

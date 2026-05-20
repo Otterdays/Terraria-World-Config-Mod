@@ -17,7 +17,7 @@ public class WorldConfigUIStateV2 : UIState
 {
     private enum Tab { World, Shape, Features, Ores, Presets, Info }
 
-    private const float HeaderH    = 44f;
+    private const float HeaderH    = 62f;
     private const float SummaryH   = 26f;
     private const float FooterH    = 56f;
     private const float SidebarW   = 168f;
@@ -29,7 +29,6 @@ public class WorldConfigUIStateV2 : UIState
     private UIScrollbar _contentScroll;
     private UIScrollColumn _contentScrollCol;
     private UIText _summaryText;
-    private UIText _ureChangeBadge;
 
     private UITextInput _filter;
     private string _filterText = "";
@@ -95,15 +94,39 @@ public class WorldConfigUIStateV2 : UIState
         };
         _panel.Append(header);
 
-        header.Append(new UIText("World Config", 1.1f, true)
+        // Title — drop to 0.85f to prevent Terraria-font blowout that overlaps subtitle.
+        header.Append(new UIText("World Config", 0.85f, true)
         {
-            HAlign = 0f, VAlign = 0.5f,
+            HAlign = 0f, VAlign = 0f,
             Left = StyleDimension.FromPixels(14f),
+            Top  = StyleDimension.FromPixels(8f),
             TextColor = new Color(220, 230, 255),
         });
 
-        var toggle = new UITextButton(WorldGenConfig.UseCustom ? "Custom: ON" : "Custom: OFF", 130f, 28f);
-        toggle.HAlign = 1f; toggle.VAlign = 0.5f;
+        // Subtitle — explain exactly what the toggle does, in two clauses.
+        header.Append(new UIText("ON  =  these sliders apply to the next world you create.    OFF  =  vanilla world generation, mod does nothing.", 0.7f)
+        {
+            HAlign = 0f, VAlign = 0f,
+            Left = StyleDimension.FromPixels(16f),
+            Top  = StyleDimension.FromPixels(36f),
+            TextColor = new Color(150, 165, 200),
+        });
+
+        // Hint above the toggle — short, points right at the button.
+        var hint = new UIText(WorldGenConfig.UseCustom
+            ? "your settings will apply ↓"
+            : "click to enable mod ↓", 0.7f)
+        {
+            HAlign = 1f, VAlign = 0f,
+            Left = StyleDimension.FromPixels(-22f),
+            Top  = StyleDimension.FromPixels(8f),
+            TextColor = new Color(160, 175, 210),
+        };
+        header.Append(hint);
+
+        var toggle = new UITextButton(WorldGenConfig.UseCustom ? "Custom: ON" : "Custom: OFF", 138f, 28f);
+        toggle.HAlign = 1f; toggle.VAlign = 0f;
+        toggle.Top  = StyleDimension.FromPixels(26f);
         toggle.Left = StyleDimension.FromPixels(-12f);
         toggle.BaseColor = WorldGenConfig.UseCustom ? new Color(40, 120, 60) : new Color(120, 40, 40);
         toggle.OnClick = () =>
@@ -111,6 +134,9 @@ public class WorldConfigUIStateV2 : UIState
             WorldGenConfig.UseCustom = !WorldGenConfig.UseCustom;
             toggle.Text = WorldGenConfig.UseCustom ? "Custom: ON" : "Custom: OFF";
             toggle.BaseColor = WorldGenConfig.UseCustom ? new Color(40, 120, 60) : new Color(120, 40, 40);
+            hint.SetText(WorldGenConfig.UseCustom
+                ? "your settings will apply ▼"
+                : "click to enable mod ▼");
         };
         header.Append(toggle);
     }
@@ -393,7 +419,8 @@ public class WorldConfigUIStateV2 : UIState
             formatter: v => $"×{v:0.00}",
             onChanged: v => { setter(v); RefreshNavBadges(); RefreshSummary(); },
             defaultValue: def,
-            showVanillaBadge: true));
+            showVanillaBadge: true,
+            labelWidth: 115, valueWidth: 56, badgeWidth: 48));
     }
 
     private void BuildOresTab()
@@ -425,13 +452,13 @@ public class WorldConfigUIStateV2 : UIState
             formatter: v => $"×{v:0.00}",
             onChanged: v => { WorldGenConfig.OreVeinSizeMul = v; RefreshSummary(); RefreshNavBadges(); },
             defaultValue: WorldGenConfig.DefaultOreVeinSizeMul,
-            showVanillaBadge: true));
+            showVanillaBadge: true, labelWidth: 100, valueWidth: 56, badgeWidth: 48));
         _contentList.Add(new UICompactSliderRow("Frequency", 0.1f, 25f,
             WorldGenConfig.OreFrequencyMul, 0.05f,
             formatter: v => $"×{v:0.00}",
             onChanged: v => { WorldGenConfig.OreFrequencyMul = v; RefreshSummary(); RefreshNavBadges(); },
             defaultValue: WorldGenConfig.DefaultOreFrequencyMul,
-            showVanillaBadge: true));
+            showVanillaBadge: true, labelWidth: 100, valueWidth: 56, badgeWidth: 48));
 
         AddHeading($"Per-Ore (19 world-gen)");
 
@@ -447,7 +474,7 @@ public class WorldConfigUIStateV2 : UIState
                 formatter: v => $"×{v:0.00}",
                 onChanged: v => { WorldGenConfig.OreMul[captured] = v; RefreshNavBadges(); },
                 defaultValue: WorldGenConfig.DefaultOreMul,
-                showVanillaBadge: true));
+                showVanillaBadge: true, labelWidth: 100, valueWidth: 56, badgeWidth: 48));
             shown++;
         }
         if (shown == 0 && f.Length > 0)
@@ -482,34 +509,157 @@ public class WorldConfigUIStateV2 : UIState
 
     private void BuildInfoTab()
     {
-        AddHeading("About");
-        _contentList.Add(MakeInfoLine("World Config Mod — modifies vanilla world generation."));
-        _contentList.Add(MakeInfoLine("ESC closes panel. Scroll-wheel scrolls the content column."));
-        _contentList.Add(MakeInfoLine("Yellow dot = value differs from vanilla default."));
-        _contentList.Add(MakeInfoLine("Green % = above vanilla. Red % = below vanilla."));
+        AddHeading("What this mod does");
+        _contentList.Add(MakeInfoLine("Lets you customize how Terraria builds your world before it generates."));
+        _contentList.Add(MakeInfoLine("Every slider is a multiplier on top of the vanilla amount — it doesn't"));
+        _contentList.Add(MakeInfoLine("replace vanilla logic, it supplements it (adds extra on top)."));
+        _contentList.Add(MakeInfoLine("Step 1: enable 'Custom: ON' (top-right button)."));
+        _contentList.Add(MakeInfoLine("Step 2: tweak the knobs across the tabs."));
+        _contentList.Add(MakeInfoLine("Step 3: hit 'Apply & Back', then create your world like normal."));
 
-        AddHeading("Ore Phases (wiki)");
-        foreach (var entry in OreCatalog.All)
+        AddHeading("The tabs");
+        _contentList.Add(MakeInfoLine("World    —  set width & height in tiles; 5 quick size presets."));
+        _contentList.Add(MakeInfoLine("Shape    —  how deep caves go + which side the dungeon spawns on."));
+        _contentList.Add(MakeInfoLine("Features —  gems, life crystals, chests, floating islands, marble/granite."));
+        _contentList.Add(MakeInfoLine("Ores     —  19 per-ore sliders + global frequency & vein size."));
+        _contentList.Add(MakeInfoLine("Presets  —  size shortcuts + DEBUG preset (tiny world + 20× ore)."));
+        _contentList.Add(MakeInfoLine("Info     —  you're here."));
+
+        AddHeading("Reading the sliders");
+        _contentList.Add(MakeInfoLine("×1.00 = vanilla (unchanged). ×2.00 = double the vanilla amount."));
+        _contentList.Add(MakeInfoLine("×0.50 = half the vanilla amount. ×0.00 = disabled entirely."));
+        _contentList.Add(MakeInfoLine("Yellow dot on a row = that value has been changed from vanilla."));
+        _contentList.Add(MakeInfoLine("Green % badge = above vanilla amount. Red % = below vanilla."));
+        _contentList.Add(MakeInfoLine("Sidebar ●N = number of changed values in that tab."));
+
+        AddHeading("World size");
+        _contentList.Add(MakeInfoLine("Measured in tiles. Vanilla sizes (in tiles):"));
+        _contentList.Add(MakeInfoLine("  Small  4200×1200 · Medium 6400×1800 · Large  8400×2400"));
+        _contentList.Add(MakeInfoLine("  XL    12000×3600 · XXL   16800×4800"));
+        _contentList.Add(MakeInfoLine("Minimum safe size is 4200×1200. Below that vanilla gen crashes"));
+        _contentList.Add(MakeInfoLine("(hardcoded RNG ranges invert on tiny maps)."));
+        _contentList.Add(MakeInfoLine("Larger maps generate more dungeons, biomes and have more space to explore."));
+
+        AddHeading("World Shape — Cave Depth");
+        _contentList.Add(MakeInfoLine("Scales worldSurface + rockLayer values after the Terrain pass runs."));
+        _contentList.Add(MakeInfoLine("All subsequent passes (ores, gems, structures) use the adjusted depths."));
+        _contentList.Add(MakeInfoLine("×0.50 = shallower underground (smaller cave zone)."));
+        _contentList.Add(MakeInfoLine("×2.00 = deeper underground (much larger cavern zone)."));
+
+        AddHeading("World Shape — Dungeon Side");
+        _contentList.Add(MakeInfoLine("Forces the dungeon to spawn on the left or right side of the world."));
+        _contentList.Add(MakeInfoLine("Random = vanilla behavior (dungeon side is random each world)."));
+        _contentList.Add(MakeInfoLine("Useful if you always want dungeon on a specific side."));
+
+        AddHeading("Ore generation — how it works");
+        _contentList.Add(MakeInfoLine("Pre-HM ores (Copper/Iron/Silver/Gold etc.) generate in the Shinies pass."));
+        _contentList.Add(MakeInfoLine("Hardmode ores (Cobalt/Mythril/Adamantite etc.) generate when you smash"));
+        _contentList.Add(MakeInfoLine("Demon/Crimson Altars in hardmode — not during world creation."));
+        _contentList.Add(MakeInfoLine("Chlorophyte grows naturally in the Jungle after hardmode starts."));
+        _contentList.Add(MakeInfoLine("Vein Size ×  = how big each ore cluster is."));
+        _contentList.Add(MakeInfoLine("Frequency ×  = how many clusters are placed total."));
+        _contentList.Add(MakeInfoLine("Per-ore sliders stack with the global multipliers."));
+        _contentList.Add(MakeInfoLine("Example: Global Freq ×2 + Copper ×3 = Copper at 6× vanilla frequency."));
+
+        AddHeading("Features — what each one does");
+        _contentList.Add(MakeInfoLine("Gems           —  amethyst/topaz/sapphire/emerald/ruby/diamond clusters."));
+        _contentList.Add(MakeInfoLine("Life Crystals  —  glowing pink crystals underground (each gives +20 HP)."));
+        _contentList.Add(MakeInfoLine("Chests         —  buried chests with loot underground."));
+        _contentList.Add(MakeInfoLine("Floating Islands —  sky islands with chests and Skyware loot."));
+        _contentList.Add(MakeInfoLine("Marble/Granite  —  stone biome pockets with statues and unique enemies."));
+
+        AddHeading("Controls");
+        _contentList.Add(MakeInfoLine("ESC          —  close panel. Values stay until you reset or relaunch."));
+        _contentList.Add(MakeInfoLine("Scroll wheel —  scrolls the content column on the right."));
+        _contentList.Add(MakeInfoLine("Click + drag —  drag the white knob left/right to set a slider value."));
+        _contentList.Add(MakeInfoLine("Reset Defaults  —  reverts every value back to vanilla."));
+        _contentList.Add(MakeInfoLine("DEBUG preset —  sets tiny map + 20× all ore for quick dev testing."));
+
+        AddHeading("Performance notes");
+        _contentList.Add(MakeInfoLine("XXL world (16800×4800) ≈ 10–15× more tiles than vanilla Small."));
+        _contentList.Add(MakeInfoLine("At ×25 ore frequency on XXL expect gen to take several minutes."));
+        _contentList.Add(MakeInfoLine("Gen time shown in summary bar (top) is a rough estimate only."));
+        _contentList.Add(MakeInfoLine("If gen hangs: check if ore multipliers are extreme on large maps."));
+
+        AddHeading("Known limits");
+        _contentList.Add(MakeInfoLine("Settings are in-memory only — lost on relaunch (no config file yet)."));
+        _contentList.Add(MakeInfoLine("Multiplayer: host's settings apply; clients don't see this menu."));
+        _contentList.Add(MakeInfoLine("Some passes don't scale perfectly at extreme sizes (very small worlds)."));
+        _contentList.Add(MakeInfoLine("Per-ore sliders only affect world-gen ores. See Ore Phases below."));
+
+        AddHeading("Ore Phases — when each ore spawns");
+        _contentList.Add(MakeInfoLine("PreHardmodeScatter = world creation.  HardmodeAltar = smash altars."));
+        _contentList.Add(MakeInfoLine("HardmodeNatural = grows after HM.  * = no per-ore multiplier."));
+        AddOrePhasesTwoCol();
+    }
+
+    private void AddOrePhasesTwoCol()
+    {
+        var all = new List<OreEntry>();
+        foreach (var e in OreCatalog.All) all.Add(e);
+
+        int half = (all.Count + 1) / 2;
+        for (int i = 0; i < half; i++)
         {
-            _contentList.Add(MakeInfoLine(
-                $"{entry.DisplayName,-12}  {entry.Phase}"
-              + (entry.HasWorldGenMultiplier ? "" : "  (no multiplier)")));
+            var row = new UIElement
+            {
+                Width = StyleDimension.Fill,
+                Height = StyleDimension.FromPixels(18f),
+            };
+
+            row.Append(MakePhaseCell(all[i], 0f, 0.5f));
+            if (i + half < all.Count)
+                row.Append(MakePhaseCell(all[i + half], 0.5f, 0.5f));
+
+            _contentList.Add(row);
         }
+    }
+
+    private static UIElement MakePhaseCell(OreEntry entry, float leftPct, float widthPct)
+    {
+        var cell = new UIPanel
+        {
+            Width  = StyleDimension.FromPixelsAndPercent(-4f, widthPct),
+            Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
+            Left   = StyleDimension.FromPixelsAndPercent(0f, leftPct),
+            BackgroundColor = new Color(28, 36, 60) * 0.7f,
+            BorderColor = Color.Transparent,
+            PaddingTop = 0f, PaddingBottom = 0f, PaddingLeft = 6f, PaddingRight = 6f,
+        };
+        string txt = $"{entry.DisplayName} — {entry.Phase}"
+                   + (entry.HasWorldGenMultiplier ? "" : " *");
+        cell.Append(new UIText(txt, 0.7f)
+        {
+            HAlign = 0f, VAlign = 0.5f,
+            TextColor = entry.HasWorldGenMultiplier
+                ? new Color(190, 200, 220)
+                : new Color(150, 130, 110),
+        });
+        return cell;
     }
 
     // ---------- Helpers ----------
     private void AddHeading(string title)
     {
-        var row = new UIElement
+        // Spacer above (visual rhythm between sections).
+        _contentList.Add(new UIElement
         {
             Width = StyleDimension.Fill,
-            Height = StyleDimension.FromPixels(22f),
-            PaddingTop = 6f,
+            Height = StyleDimension.FromPixels(6f),
+        });
+
+        var row = new UIPanel
+        {
+            Width = StyleDimension.Fill,
+            Height = StyleDimension.FromPixels(20f),
+            BackgroundColor = new Color(28, 38, 70) * 0.6f,
+            BorderColor = Color.Transparent,
+            PaddingTop = 0f, PaddingBottom = 0f, PaddingLeft = 8f, PaddingRight = 6f,
         };
-        row.Append(new UIText(title, 0.85f, true)
+        row.Append(new UIText(title, 0.7f, large: false)
         {
             HAlign = 0f, VAlign = 0.5f,
-            TextColor = new Color(150, 175, 230),
+            TextColor = new Color(180, 205, 255),
         });
         _contentList.Add(row);
     }

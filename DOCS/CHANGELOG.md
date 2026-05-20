@@ -6,6 +6,38 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Changed
+
+- **README.md** — GitHub layout with centered `banner.svg`, shields, V2 UI + tier-1 features, corrected 4200×1200 minimum and debug preset.
+- **`banner.svg`** — green CUSTOM ON badge, two-line footer (features + v0.1).
+- **DOCS** — ARCHITECTURE / MODDING_GUIDE / AGENTS / SUMMARY synced after audit (removed stale `menuMode 31337` guidance in new amendments).
+- **Section headings (V2 panel)** — scale 0.85→0.70 (no bold); now rendered in a 20px dark-blue pill panel with 6px spacer above; prevents Terraria font blowout in every tab.
+- **`UICompactSliderRow`** — bar capped at 420px max width (was unbounded; stretched 900px+ on wide panel); row height 22→26px for breathing room; label width params exposed per-callsite.
+- **Features/Ores label widths** — bumped to 100–115px so "Floating Islands", "Life Crystals", "Marble/Granite" no longer clip.
+- **Info tab** — massively expanded; sections: What this mod does, The tabs, Reading the sliders, World size, Cave Depth, Dungeon Side, Ore generation (how it works + stacking), Features (each slider explained), Controls, Performance notes, Known limits, Ore Phases (2-col grid with phase abbreviation key).
+
+### Added
+
+- **V2 sidebar panel** (`WorldConfigUIStateV2.cs`) — compact redesign with sidebar nav (World / Shape / Features / Ores / Presets / Info tabs), 22px dense rows, live summary strip, ore search/filter, diff dot indicators, and vanilla % badges.
+- **`UICompactSliderRow`** — 22px inline slider row; yellow diff dot when value ≠ vanilla default; optional vanilla % badge (green = above, red = below vanilla); colored fill when changed.
+- **`UITextInput`** — click-to-focus single-line text input; used for ore filter in Ores tab.
+- **`WorldGenConfig` diff helpers** — `CountChanges()`, `CountOreChanges()`, `CountWorldChanges()`, `CountFeatureChanges()`, `IsOreDefault(key)` for sidebar diff badges.
+- **`WorldGenConfig.UseV2Panel`** — static flag (default `true`) to toggle between legacy two-column panel and new V2 sidebar panel; persists for session.
+- **`WorldGenConfig` default constants** — `DefaultWorldWidth`, `DefaultWorldHeight`, `DefaultOreVeinSizeMul`, etc. for use in diff detection and reset logic.
+- **V1/V2 swap buttons** — "Try New UI →" in legacy panel header; "← Legacy Panel" in V2 sidebar; both call `UIInjectSystem.ReopenConfigMenu()` for instant mid-session swap.
+- **`UIInjectSystem.ReopenConfigMenu()`** — swaps active config panel state without losing return-menu context.
+- **Live summary strip** in V2 — shows `W×H · Size · Nk tiles · est gen ~Xs · ore freq ×N · vein ×N · N changes` updating on every slider change.
+- **Diff badges on sidebar nav** — `●N` next to World / Features / Ores category when any value in that tab differs from vanilla.
+- **Ore filter in Ores tab** — text input to filter per-ore sliders by name; × clear button; live rebuild on type.
+- **Compact preset button row** — 5 presets (Small/Med/Large/XL/XXL) in a single 26px row; reused in both World tab and Presets tab of V2 panel.
+
+### Changed
+
+- `UIInjectSystem` — holds both `WorldConfigUIState` (V1) and `WorldConfigUIStateV2`; activates both on `Load()`; picks active state via `WorldGenConfig.UseV2Panel`.
+- EXPANSIONS.md checklist updated to reference V2 panel for new slider additions.
+
+## [Previous — Tier-1 World Gen Expansions]
+
 ### Added
 
 - **Tier-1 world-gen expansions** (`FeatureGenSystem.cs`):

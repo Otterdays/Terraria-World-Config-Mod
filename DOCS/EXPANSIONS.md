@@ -232,8 +232,8 @@ flowchart TD
 
 ## Adding a new expansion (checklist)
 
-1. Add field(s) to `WorldGenConfig.cs` (or a dedicated `FeatureGenConfig`).
-2. Add slider / preset in `WorldConfigUIState.cs` (or new UI section).
+1. Add field(s) to `WorldGenConfig.cs` (and a default constant; update `CountChanges` if relevant).
+2. Add slider in **`WorldConfigUIStateV2.cs`** under the appropriate tab (`BuildWorldTab`, `BuildShapeTab`, `BuildFeaturesTab`, `BuildOresTab`). Use `UICompactSliderRow` with `defaultValue` + `showVanillaBadge: true`.
 3. Implement hook in a `ModSystem` — pick tier from tables above.
 4. If testable math, add helpers in `Core/` + tests in `WorldConfigMod.Tests/`.
 5. Document in this file (append under tier) and [CHANGELOG.md](CHANGELOG.md).

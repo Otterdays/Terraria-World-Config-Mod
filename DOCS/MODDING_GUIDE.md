@@ -115,6 +115,7 @@ public static void ApplyDebugWorldGenPreset()
     UseCustom = true;
     WorldWidth = MinWidth;      // 1750
     WorldHeight = MinHeight;    // 600
+    // [AMENDED 2026-05-20]: MinWidth/MinHeight are now 4200/1200 (vanilla Small floor).
     OreVeinSizeMul = 20f;
     OreFrequencyMul = 20f;
     OreConfigHelper.ResetAll(OreMul);
@@ -288,6 +289,17 @@ Vanilla `DrawMenu` is **skipped** in config mode — so input must be driven fro
 | Per-Ore (19 types) | ×0 | ×5 | ×1 |
 
 Debug preset: **1750×600**, vein **×20**, frequency **×20**, custom gen **ON**. Orange footer button **DEBUG: Tiny + 20× Ore**.
+
+## [AMENDED 2026-05-20]: Safe size floor + V2 UI
+
+| Slider | Min | Max | Default |
+|--------|-----|-----|---------|
+| World Width | **4200** | 16800 | 4200 |
+| World Height | **1200** | 4800 | 1200 |
+
+Debug preset: **4200×1200** (vanilla Small — lowest size that survives vanilla gen passes), vein **×20**, frequency **×20**, custom gen **ON**.
+
+New sliders: prefer **`WorldConfigUIStateV2.cs`** tab builders (`UICompactSliderRow`). Legacy V1: `WorldConfigUIState.cs`.
 
 ---
 

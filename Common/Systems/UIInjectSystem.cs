@@ -222,7 +222,11 @@ public class UIInjectSystem : ModSystem
                 _recalcFramesRemaining--;
         }
 
-        _configState?.ApplyScrollWheel(ConsumeMouseScrollDelta());
+        int scrollDelta = ConsumeMouseScrollDelta();
+        if (WorldGenConfig.UseV2Panel)
+            _configStateV2?.ApplyScrollWheel(scrollDelta);
+        else
+            _configState?.ApplyScrollWheel(scrollDelta);
 
         if (Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape))
             CloseConfigMenu();

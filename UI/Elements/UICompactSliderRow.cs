@@ -44,7 +44,7 @@ public class UICompactSliderRow : UIElement
         ShowVanillaBadge = showVanillaBadge;
         LabelWidth = labelWidth; ValueWidth = valueWidth; BadgeWidth = badgeWidth;
         Width = StyleDimension.Fill;
-        Height = StyleDimension.FromPixels(22f);
+        Height = StyleDimension.FromPixels(26f);
     }
 
     public override void LeftMouseDown(UIMouseEvent evt) { _dragging = true; UpdateFromMouse(); }
@@ -78,6 +78,7 @@ public class UICompactSliderRow : UIElement
         int rightPad = ValueWidth + (ShowVanillaBadge ? BadgeWidth : 0) + 8;
         int w = dims.Width - leftPad - rightPad;
         if (w < 24) w = 24;
+        if (w > 420) w = 420; // cap so bars don't span full wide-panel width
         return new Rectangle(dims.X + leftPad, dims.Y + dims.Height / 2 - 2, w, 4);
     }
 

@@ -1,249 +1,189 @@
-# World Config — Terraria tModLoader Mod
+<p align="center">
+  <img src="banner.svg" alt="World Config — Terraria tModLoader mod banner" width="100%" />
+</p>
 
-MVP mod giving you full control over **world size** and **ore generation** from a
-custom UI on the New World screen. Targets **tModLoader 1.4.4+ (Terraria 1.4.4)**.
+<h1 align="center">World Config</h1>
 
-Developer docs: [`AGENTS.md`](AGENTS.md) · [`DOCS/MODDING_GUIDE.md`](DOCS/MODDING_GUIDE.md) · [`DOCS/SUMMARY.md`](DOCS/SUMMARY.md) · [`DOCS/ARCHITECTURE.md`](DOCS/ARCHITECTURE.md) · [`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md)
+<p align="center">
+  <strong>Resize worlds. Tune every ore vein. Shape caves, dungeons, and loot — before you hit Create.</strong>
+</p>
 
----
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#usage">Usage</a> ·
+  <a href="#settings">Settings</a> ·
+  <a href="#tests">Tests</a> ·
+  <a href="DOCS/SUMMARY.md">Developer docs</a>
+</p>
 
-## Table of contents
-- [What it does](#what-it-does)
-- [Build & install](#build--install)
-- [Use](#use)
-- [Settings reference](#settings-reference)
-- [File layout](#file-layout)
-- [How it works (internals)](#how-it-works-internals)
-- [Troubleshooting](#troubleshooting)
-- [Caveats (MVP scope)](#caveats-mvp-scope)
-- [Extending](#extending)
-
----
-
-## What it does
-
-- Adds a **World Config** overlay button at the bottom of the vanilla "Create New World" screen.
-- Shows a **toast notification** when the mod loads and when the New World screen is detected.
-- Opens a **near-fullscreen two-column** config panel:
-  - **Left:** world width/height, size presets, quick info
-  - **Right:** global ore multipliers + **scrollable** list of all 19 world-gen ores
-- **21 [wiki ores](https://terraria.wiki.gg/wiki/Ores)** catalogued; **Obsidian** and **Luminite** shown as not world-gen controlled
-- When **Use Custom Generation = ON**, the next world you create:
-  - Allocates with your chosen width/height (`clearWorld` intercept).
-  - Replaces **Shinies** and supplements hellstone, chlorophyte, hardmode altar ores, and meteor events (see [ore coverage table](#ore-coverage-vs-terraria-wiki)).
+<p align="center">
+  <img src="https://img.shields.io/badge/Terraria-1.4.4-5a73b4?style=flat-square" alt="Terraria 1.4.4" />
+  <img src="https://img.shields.io/badge/tModLoader-1.4.4%2B-f0a23a?style=flat-square" alt="tModLoader 1.4.4+" />
+  <img src="https://img.shields.io/badge/.NET-net8.0-512bd4?style=flat-square" alt=".NET 8" />
+  <img src="https://img.shields.io/badge/tests-23%20passing-7ad36a?style=flat-square" alt="23 tests passing" />
+  <img src="https://img.shields.io/badge/version-0.1-9cb4ff?style=flat-square" alt="v0.1" />
+</p>
 
 ---
 
-## Build & install
+## What is this?
 
-### Option A — `build.bat` (recommended)
+**World Config** is a [tModLoader](https://tmodloader.net/) mod that adds a **World Config** button on Terraria’s **Create New World** screen. Open it, dial in size and generation rules, toggle **Use Custom Generation**, then create the world — vanilla passes stay in place; the mod **replaces or supplements** the hooks that matter (ores, dimensions, caves, gems, chests, and more).
 
-1. Install **tModLoader 1.4.4+** via Steam.
-2. Launch tModLoader **once** so it generates the `ModSources/` folder and
-   `tModLoader.targets` file under
-   `Documents\My Games\Terraria\tModLoader\`.
-3. **Close** tModLoader.
-4. Double-click **`build.bat`** in this folder (or run `cmd /c build.bat` from PowerShell).
-   It will:
-   - Mirror the source into `...\ModSources\WorldConfigMod\` via `robocopy /MIR`
-     (skipping `bin`, `obj`, `.git`, `.claude`, `DOCS`, `build.bat` itself).
-   - Refuse to run if tModLoader is still running (avoids file locks).
-   - Auto-detect tModLoader via Steam registry (`tModLoader.dll`, not a separate `.exe`).
-   - Prefer `dotnet build -c Release` when an SDK + `tModLoader.targets` exist (~5–15s).
-   - Fall back to bundled `dotnet tModLoader.dll -build` (no separate `.exe`; first run ~30–90s).
-   - Verify and report the produced `...\tModLoader\Mods\WorldConfigMod.tmod`.
-5. Launch tModLoader → **Workshop → Mods** → enable **WorldConfigMod** → Reload.
+No world edit tools. No post-gen cheats. Everything applies at generation time.
 
-**Environment overrides** (set before running):
+---
 
-| Var            | Default                                                                | Purpose |
-|----------------|------------------------------------------------------------------------|---------|
-| `TML_DIR`      | `C:\Program Files (x86)\Steam\steamapps\common\tModLoader`             | tModLoader install dir |
-| `TML_DATA_DIR` | `%USERPROFILE%\Documents\My Games\Terraria\tModLoader`                 | Save / ModSources root |
-| `MOD_NAME`     | `WorldConfigMod`                                                       | Folder + assembly name |
-| `BUILD_CONFIG` | `Release`                                                              | `Release` or `Debug`   |
+## Features
 
-Example (Steam on D:):
-```bat
-set TML_DIR=D:\SteamLibrary\steamapps\common\tModLoader
-build.bat
-```
+| Area | What you get |
+|------|----------------|
+| **World size** | Width / height sliders + **5 presets** (Small → XXL, up to 16800×4800) |
+| **Ore control** | Global vein size × and frequency ×, plus **19 per-ore** multipliers ([wiki catalog](https://terraria.wiki.gg/wiki/Ores)) |
+| **World shape** | Cave depth ×, dungeon side (left / random / right) |
+| **World features** | Gems, life crystals, chests, floating islands, marble/granite density × |
+| **V2 UI** *(default)* | Sidebar tabs, live summary strip, diff dots, vanilla % badges, ore name filter |
+| **V1 UI** | Classic two-column panel — swap anytime via **Try New UI** / **Legacy Panel** |
+| **HUD** | Green **● ON** button + status line when custom gen is active; load toast on New World |
 
-The script auto-probes common Steam library drives (C/D/E/F) if `TML_DIR` is unset.
+When **Use Custom Generation** is **OFF**, Terraria behaves exactly as stock.
 
-**Exit codes:** `0` ok · `1` tModLoader install not found · `2` tModLoader is running ·
-`3` robocopy failed · `4` build failed · `5` build OK but `.tmod` missing.
+---
 
-### Option B — manual (in-game)
+## Install
 
-1. Copy this folder to
-   `Documents\My Games\Terraria\tModLoader\ModSources\WorldConfigMod\`
-   (folder name MUST match `AssemblyName` in the `.csproj`).
-2. Launch tModLoader → **Workshop → Develop Mods → WorldConfigMod → Build + Reload**.
-3. Enable it in **Mods**, restart.
+### Quick path — `build.bat` (Windows)
 
-### Option C — pure dotnet (after Option A first run)
+1. Install **tModLoader 1.4.4+** on Steam and launch it **once** (creates `ModSources` + `tModLoader.targets`).
+2. **Close** tModLoader completely.
+3. Run **`build.bat`** in this repo (or `cmd /c build.bat` from PowerShell).
+4. In tModLoader: **Workshop → Mods** → enable **WorldConfigMod** → **Reload**.
 
-After `build.bat` (or a manual copy) has populated ModSources at least once:
+Output: `%USERPROFILE%\Documents\My Games\Terraria\tModLoader\Mods\WorldConfigMod.tmod`
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `TML_DIR` | Steam `...\common\tModLoader` | Install folder (`tModLoader.dll`) |
+| `TML_DATA_DIR` | `Documents\My Games\Terraria\tModLoader` | ModSources / Mods root |
+| `MOD_NAME` | `WorldConfigMod` | Assembly + folder name |
+| `BUILD_CONFIG` | `Release` | `Release` or `Debug` |
+
+**Exit codes:** `0` ok · `1` install not found · `2` game still running · `3` robocopy failed · `4` build failed · `5` `.tmod` missing
+
+### Manual / cross-platform
+
+Copy the project to `ModSources\WorldConfigMod\` (name must match `AssemblyName`), then **Develop Mods → Build + Reload**, or:
+
 ```bat
 dotnet build "%USERPROFILE%\Documents\My Games\Terraria\tModLoader\ModSources\WorldConfigMod\WorldConfigMod.csproj" -c Release
 ```
 
----
-
-## Use
-
-1. Main menu → **Single Player → New** → fill in difficulty / evil / seed as usual.
-2. Click **World Config** at the bottom of the screen — opens a **near-fullscreen two-column** panel:
-   - **Left:** world width/height, size presets, status
-   - **Right:** global ore multipliers + scrollable per-ore list
-3. Toggle **Use Custom Generation = ON** (header), tweak sliders, or click **DEBUG: Tiny + 20× Ore** (footer), then **Apply & Back**.
-4. Click vanilla **Create** to generate the world with your settings.
-
-> Settings are kept in memory until the game closes. Re-open the panel before each
-> new world to confirm them.
+Unit tests (no game required): `test.bat` or `dotnet test WorldConfigMod.Tests`
 
 ---
 
-## Settings reference
+## Usage
+
+1. Main menu → **Single Player → New** — set difficulty, evil, seed as usual.
+2. Click **World Config** at the bottom of the screen.
+3. Turn **Use Custom Generation** **ON**, tweak tabs (World / Shape / Features / Ores / Presets), or hit **DEBUG: Tiny + 20× Ore** for a fast test world.
+4. **Apply & Back**, then vanilla **Create**.
+
+> Settings live in memory for the session. Re-open the panel before each new world to confirm values.
+
+**UI tips (V2):** sidebar shows `●N` when a category differs from vanilla; the summary strip updates live; use the ore filter on the Ores tab; switch to V1 anytime from the header.
+
+---
+
+## Settings
 
 | Setting | Range | Default | Effect |
-|---|---|---|---|
-| Use Custom Generation | toggle | OFF | Master switch. OFF = vanilla behavior, nothing is intercepted. |
-| World Width  | 1750 – 16800 tiles | 4200 | Sets `Main.maxTilesX` before `clearWorld`. |
-| World Height | 600 – 4800 tiles   | 1200 | Sets `Main.maxTilesY` before `clearWorld`. |
-| Presets | Small / Med / Large / XL / XXL | — | 4200×1200 / 6400×1800 / 8400×2400 / 12000×3600 / 16800×4800 |
-| Debug preset | **DEBUG: Tiny + 20x Ore** (footer button, always visible) | — | 1750×600, vein ×20, frequency ×20, custom gen ON |
-| Vein Size | ×0.25 – ×25 | ×1 | Scales `OreRunner` strength + step count. |
-| Global Frequency | ×0.1 – ×25 | ×1 | Scales the number of ore-vein attempts world-wide. |
-| Per-Ore Multiplier | ×0 – ×5 | ×1 | Per-ore frequency on top of the global multiplier. ×0 disables a single ore. |
+|---------|-------|---------|--------|
+| Use Custom Generation | toggle | OFF | Master switch — OFF = vanilla only |
+| World width | 4200 – 16800 | 4200 | `Main.maxTilesX` at `clearWorld` |
+| World height | 1200 – 4800 | 1200 | `Main.maxTilesY` at `clearWorld` |
+| Size presets | S / M / L / XL / XXL | — | 4200×1200 … 16800×4800 |
+| Vein size | ×0.25 – ×25 | ×1 | OreRunner strength + steps |
+| Global frequency | ×0.1 – ×25 | ×1 | World-wide vein attempt count |
+| Per-ore multiplier | ×0 – ×5 | ×1 | Per-type frequency; ×0 disables one ore |
+| Cave depth | ×0.5 – ×2 | ×1 | Scales surface / rock layer after Terrain |
+| Dungeon side | Left / Random / Right | Random | `GenVars.dungeonSide` |
+| Gems / hearts / chests / islands / marble-granite | ×0 – ×5 | ×1 | Supplemental scatter passes |
+| Debug preset | footer button | — | Min safe size (4200×1200), vein ×20, freq ×20, custom ON |
+
+**Not slider-controlled:** [Obsidian](https://terraria.wiki.gg/wiki/Obsidian) (lava+water), [Luminite](https://terraria.wiki.gg/wiki/Luminite) (boss drop) — listed for reference only.
+
+### Ore generation coverage
+
+| Phase | Ores | Mechanism |
+|-------|------|-----------|
+| Pre-Hardmode | Copper → Platinum, evil, rare meteorite | Replaces **Shinies** pass |
+| Underworld | Hellstone | Pass after **Underworld** |
+| Hardmode altar | Cobalt → Titanium | `SmashAltar` supplement |
+| Hardmode natural | Chlorophyte | `ModifyHardmodeTasks` |
+| Meteor events | Meteorite | `dropMeteor` supplement |
 
 ---
 
-## File layout
+## Project layout
 
 ```
-build.txt                              — mod metadata
-description.txt                        — workshop description
-build.bat / test.bat                   — build .tmod / run unit tests (repo-only)
-AGENTS.md                              — AI agent instructions
-WorldConfigMod.csproj                  — tML build project (imports ..\tModLoader.targets)
-WorldConfigMod.cs                      — Mod entry
-README.md                              — user guide
-Core/                                  — testable ore catalog + math (no Terraria refs)
-WorldConfigMod.Tests/                  — xUnit tests (excluded from .tmod)
-DOCS/                                  — developer docs (not mirrored to ModSources)
-  MODDING_GUIDE.md, EXPANSIONS.md, ARCHITECTURE.md, …
+Core/                    Ore catalog + math (unit-tested, no Terraria refs)
 Common/
-  WorldGenConfig.cs                    — static settings + presets
-  Ore/OreScatterSpecs.cs, OreScatterRunner.cs
-  UI/ToastManager.cs
-  Systems/
-    WorldSizeSystem.cs, OreGenSystem.cs
-    UIInjectSystem.cs, MenuDrawSystem.cs, ToastSystem.cs
+  WorldGenConfig.cs      Session settings + presets + diff helpers
+  Systems/               WorldSize, OreGen, FeatureGen, UI inject, menu draw, toasts
+  Ore/                   Scatter specs + runner
 UI/
-  WorldConfigUIState.cs                — two-column config screen
-  Elements/UISliderRow.cs, UITextButton.cs, UIScrollColumn.cs
-Localization/en-US_Mods.WorldConfigMod.hjson
+  WorldConfigUIStateV2   Sidebar panel (default)
+  WorldConfigUIState     Legacy two-column panel
+  Elements/              Sliders, scroll, compact rows, text input
+WorldConfigMod.Tests/    23 xUnit tests
+DOCS/                    Architecture, modding guide, roadmap (dev-only)
+build.bat / test.bat     Build .tmod / run tests (not shipped in .tmod)
+banner.svg               GitHub social preview (1200×630)
 ```
 
----
-
-## How it works (internals)
-
-| Concern | Hook / API | File |
-|---|---|---|
-| Detect New World screen | `ShouldDrawOverlay()` when `Main.MenuUI.CurrentState is UIWorldCreation` | [`UIInjectSystem.cs`](Common/Systems/UIInjectSystem.cs) |
-| Draw overlay button | `On_Main.DrawMenu` → `DrawOverlayButton` (framebuffer coords, `Matrix.Identity`) | [`MenuDrawSystem.cs`](Common/Systems/MenuDrawSystem.cs), [`UiDrawSpace.cs`](Common/UI/UiDrawSpace.cs) |
-| Open custom panel | `Main.MenuUI.SetState(WorldConfigUIState)`; restores prior state on close | [`UIInjectSystem.cs`](Common/Systems/UIInjectSystem.cs) |
-| Config panel input | `UpdateUI` → `Main.MenuUI.Update`; scroll via `PostUpdateInput` + `ApplyScrollWheel` | [`UIInjectSystem.cs`](Common/Systems/UIInjectSystem.cs), [`WorldConfigUIState.cs`](UI/WorldConfigUIState.cs) |
-| Toast notifications | Menu: `DrawMenu` + viewport pixels; in-world: `ModifyInterfaceLayers` + layout space | [`ToastSystem.cs`](Common/Systems/ToastSystem.cs), [`ToastManager.cs`](Common/UI/ToastManager.cs) |
-| Override world dimensions | `On_WorldGen.clearWorld` detour: sets `Main.maxTilesX`, `maxTilesY`, `bottomWorld`, `rightWorld` *before* `orig()` | [`WorldSizeSystem.cs`](Common/Systems/WorldSizeSystem.cs) |
-| Custom ore generation | `ModifyWorldGenTasks` (Shinies, Hellstone supplement), `ModifyHardmodeTasks` (Chlorophyte), `On_WorldGen.SmashAltar` + `dropMeteor` hooks | [`OreGenSystem.cs`](Common/Systems/OreGenSystem.cs), [`OreScatterSpecs.cs`](Common/Ore/OreScatterSpecs.cs) |
-| Ore catalog (21 wiki types) | `Core/OreCatalog.cs` — 19 with multipliers, 2 N/A (Obsidian, Luminite) | [`Core/OreCatalog.cs`](Core/OreCatalog.cs) |
-| Settings storage | Plain static fields + per-ore dictionary from `OreCatalog`; presets in `ApplyPresetSize` / `ApplyDebugWorldGenPreset` | [`WorldGenConfig.cs`](Common/WorldGenConfig.cs) |
+**For contributors & agents:** [`AGENTS.md`](AGENTS.md) · [`DOCS/MODDING_GUIDE.md`](DOCS/MODDING_GUIDE.md) · [`DOCS/ARCHITECTURE.md`](DOCS/ARCHITECTURE.md) · [`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md)
 
 ---
 
 ## Troubleshooting
 
-| Symptom | Likely cause / fix |
-|---|---|
-| `... was unexpected at this time` when running `build.bat` | Fixed in current script (paths with `(x86)`). Update `build.bat` from repo. |
-| `build.bat` says **tModLoader install not found** | Modern tML uses `tModLoader.dll`, not `.exe`. Update `build.bat` from repo — it auto-detects via Steam registry. If still failing, set `TML_DIR` to your Steam `...\common\tModLoader` folder. |
-| Build errors in `ToastManager` / UI (`DynamicSpriteFont`, `double`→`float`) | Pull latest source — use `Utils.DrawBorderString` and explicit `(float)` casts for tML net8.0. |
-| `build.bat` says **tModLoader is running** | Close tModLoader fully (taskbar tray too) and retry. |
-| Build falls back to `tModLoader -build` and takes 30–90s | Normal first time. tModLoader has to JIT the game to compile. Subsequent dotnet incremental builds will be ~5s. |
-| `.tmod` not found after success | Inspect `%TML_DATA_DIR%\Logs\Logs.log` and `client.log`. |
-| **World Config** button doesn't appear in the New World screen | Mod isn't enabled, or another mod replaced `UIWorldCreation`. Reload mods, check `Mods → Enabled`. |
-| World generation crashes with custom width/height | Stay within recommended safe range (width 4200–12000, height 1200–3600). Some vanilla passes hardcode assumptions about the standard 3 sizes. |
-| Crash opening World Config (`SpriteBatch.Begin` already called) | Update to latest `MenuDrawSystem.cs` — calls `EnsureSpriteBatchClosed` before drawing. Rebuild + reload. |
-| All ores look the same as vanilla | Confirm **Use Custom Generation = ON** *before* clicking Create. The toggle is per-session in memory. |
-| Scroll wheel / scrollbar doesn't work on ore list | Update to latest build — `UIInjectSystem.UpdateUI` + `PostUpdateInput` drive `Main.MenuUI`. Reload mod after rebuild. |
-| Toast / button stuck in top-left corner on big monitor | Old builds used `Main.screenWidth` (layout) with `Matrix.Identity`. Update — menu HUD uses `GraphicsDevice.Viewport` via `UiDrawSpace`. |
-| Cursor draws **behind** World Config button | Update `MenuDrawSystem` — calls `RedrawMenuCursor()` after overlay draw. Reload mod. |
+| Symptom | Fix |
+|---------|-----|
+| `build.bat` — tModLoader not found | Point `TML_DIR` at Steam `...\common\tModLoader` (uses `tModLoader.dll`, not `.exe`) |
+| `build.bat` — game still running | Close tModLoader (tray too) |
+| No **World Config** button | Enable mod + Reload; check for UI conflicts on New World |
+| World gen crash on tiny sizes | Minimum safe size is **4200×1200** (vanilla Small); smaller worlds break vanilla passes |
+| Ores look vanilla | Turn **Use Custom Generation ON** *before* Create |
+| Button / toast in top-left on 4K | Update mod — menu HUD uses framebuffer viewport, not layout size |
+| Cursor behind button | Update `MenuDrawSystem` — cursor redraw after overlay |
+| Scroll wheel dead on ore list | Rebuild; input via `UIInjectSystem` + `Main.MenuUI` |
 
 ---
 
 ## Caveats
 
-- **Custom dimensions** outside the vanilla 3 presets are *experimental*; very small
-  or very tall worlds can break vanilla generation steps (chasms, dungeon placement,
-  jungle temple). Recommended safe range: width 4200–12000, height 1200–3600.
-- **Settings are per-session in memory** — not persisted to disk yet. Toggle them
-  every time before creating a world.
-- **All 21 [wiki ores](https://terraria.wiki.gg/wiki/Ores)** are listed in the UI.
-  **19** have world-gen multipliers; **Obsidian** (water+lava) and **Luminite**
-  (Moon Lord drop) are documented as not world-gen controlled.
-- Custom gen **supplements** vanilla passes (Shinies replacement + extra scatter).
-  Hardmode altar ores get **bonus veins** after each smash when multipliers > 1×.
-- **Evil-biome ores** (Crimtane / Demonite) multiplier applies to supplemental
-  scatter — chasm-placed evil ore from vanilla is untouched.
-- Single-player tested only; **multiplayer/server sync** of these settings is not
-  implemented (config is per-client, applied during local world generation).
-- **Windows-only build script** (`build.bat`). Linux/Mac: `dotnet build` on the
-  `.csproj` under `ModSources/`, or run unit tests via `test.bat` / `dotnet test`.
-
-### Ore coverage vs [Terraria wiki](https://terraria.wiki.gg/wiki/Ores)
-
-| Phase | Ores | Hook |
-|---|---|---|
-| Pre-Hardmode scatter | Copper, Tin, Iron, Lead, Silver, Tungsten, Gold, Platinum, Demonite, Crimtane, Meteorite (rare) | Replaces **Shinies** pass |
-| Underworld | Hellstone | Pass after **Underworld** |
-| Hardmode altar | Cobalt, Palladium, Mythril, Orichalcum, Adamantite, Titanium | `On_WorldGen.SmashAltar` supplement |
-| Hardmode natural | Chlorophyte | `ModifyHardmodeTasks` pass |
-| Meteor events | Meteorite | `On_WorldGen.dropMeteor` supplement |
-| Not world-gen | Obsidian, Luminite | Info rows only (no slider) |
+- **Experimental sizes** above vanilla Large can stress dungeon/jungle/temple placement — sweet spot often 4200–12000 wide.
+- **No persistence yet** — settings reset when you quit the game.
+- **Single-player tested** — multiplayer config sync not implemented.
+- **Windows-first build script** — other OS: copy to ModSources + `dotnet build` / `dotnet test`.
 
 ---
 
 ## Tests
 
-Pure logic (catalog, vein math, config keys) lives in `Core/` and is tested without tModLoader:
-
 ```bat
 test.bat
 ```
 
-Or: `dotnet test WorldConfigMod.Tests\WorldConfigMod.Tests.csproj`
-
-23 unit tests — catalog completeness (21 wiki ores), multiplier math, config defaults.
+23 tests — ore catalog (21 wiki types), vein math, config keys/defaults. Gameplay is manual in tModLoader.
 
 ---
 
-## Extending
+## License & credits
 
-See **[`DOCS/MODDING_GUIDE.md`](DOCS/MODDING_GUIDE.md)** for step-by-step recipes (new sliders, presets, ores, debug tweaks).
+Terraria and tModLoader are respective trademarks of Re-Logic and the tModLoader team. This mod is community tooling — see `build.txt` for mod metadata.
 
-See **[`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md)** for the full world-gen expansion roadmap.
-
-See **[`AGENTS.md`](AGENTS.md)** if you use AI coding agents in this repo.
-
-Ideas not yet implemented:
-- **Biome size controls**: hook `WorldGen.jungleOriginX`, dungeon side, evil-biome
-  width, etc., in a new system that sets values before `WorldGen.GenerateWorld`.
-- **Persist settings**: wrap `WorldGenConfig` fields with tML `Preferences`
-  save/load triggered on `Refresh()` / `Apply`.
-- **Per-world settings**: store a JSON blob via `ModSystem.SaveWorldData` /
-  `LoadWorldData` so each world remembers the multipliers used to create it.
-- **Linux/Mac build script**: port `build.bat` to `build.sh` (rsync + dotnet build).
+**Roadmap:** [`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md) — biomes, persistence, multiplayer sync, and more.

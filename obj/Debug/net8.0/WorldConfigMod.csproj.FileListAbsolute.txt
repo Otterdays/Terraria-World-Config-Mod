@@ -1,0 +1,13 @@
+C:\Users\home\Desktop\Terraria-World-Config-Mod\bin\Debug\net8.0\WorldConfigMod.deps.json
+C:\Users\home\Desktop\Terraria-World-Config-Mod\bin\Debug\net8.0\WorldConfigMod.dll
+C:\Users\home\Desktop\Terraria-World-Config-Mod\bin\Debug\net8.0\WorldConfigMod.pdb
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.csproj.AssemblyReference.cache
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.AssemblyInfoInputs.cache
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.AssemblyInfo.cs
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.csproj.CoreCompileInputs.cache
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.sourcelink.json
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.dll
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\refint\WorldConfigMod.dll
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\WorldConfigMod.pdb
+C:\Users\home\Desktop\Terraria-World-Config-Mod\obj\Debug\net8.0\ref\WorldConfigMod.dll

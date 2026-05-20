@@ -31,19 +31,21 @@ Core/                          — testable logic (no Terraria refs)
   OreGenMath.cs, OreConfigHelper.cs
 
 Common/
-  WorldGenConfig.cs              — session settings (static fields)
+  WorldGenConfig.cs              — session settings (static fields); UseV2Panel default true
   Ore/OreScatterSpecs.cs         — tile IDs + scatter params
   Ore/OreScatterRunner.cs        — OreRunner helpers
   Systems/
     WorldSizeSystem.cs           — On_WorldGen.clearWorld
     OreGenSystem.cs              — ore gen hooks
-    UIInjectSystem.cs            — overlay button, Main.MenuUI config panel, input
+    FeatureGenSystem.cs          — caves, dungeon side, gems, chests, islands, marble/granite
+    UIInjectSystem.cs            — overlay button, Main.MenuUI V1+V2 panel, input
     MenuDrawSystem.cs            — DrawMenu: framebuffer pixels + Matrix.Identity
     ToastSystem.cs
 
 UI/
-  WorldConfigUIState.cs          — two-column config panel
-  Elements/                      — UISliderRow, UITextButton, UIScrollColumn
+  WorldConfigUIStateV2.cs        — sidebar panel (default)
+  WorldConfigUIState.cs          — legacy two-column panel
+  Elements/                      — UISliderRow, UICompactSliderRow, UITextInput, UIScrollColumn, …
 
 WorldConfigMod.Tests/            — xUnit; links Core/ sources; excluded from .tmod build
 ```
@@ -68,6 +70,7 @@ Custom gen runs only when `WorldGenConfig.UseCustom == true` at world create tim
 | Hook | File |
 |------|------|
 | Dimensions | `WorldSizeSystem` → `On_WorldGen.clearWorld` |
+| Cave depth, dungeon, features | `FeatureGenSystem` → `PreWorldGen` + `ModifyWorldGenTasks` inserts |
 | Pre-HM ores | `OreGenSystem` → replace **Shinies** |
 | Hellstone | insert pass after **Underworld** |
 | Chlorophyte | `ModifyHardmodeTasks` append |
@@ -89,7 +92,7 @@ Ore keys come from `Core/OreCatalog.cs`. UI lists `OreCatalog.WithMultipliers` (
 |------|----------------|
 | Default sizes / presets | `Common/WorldGenConfig.cs` |
 | New ore type | `Core/OreCatalog.cs` + `Common/Ore/OreScatterSpecs.cs` + `OreGenSystem.cs` + tests |
-| New slider | `WorldGenConfig` field + `UI/WorldConfigUIState.cs` + system that consumes it |
+| New slider | `WorldGenConfig` field + `UI/WorldConfigUIStateV2.cs` (preferred) or V1 + consuming system |
 | New world-gen feature | See `DOCS/EXPANSIONS.md`; prefer supplement passes over full pass replacement |
 | UI layout / scroll | `UI/WorldConfigUIState.cs`, `UI/Elements/UIScrollColumn.cs`, `UIInjectSystem` (`UpdateUI`, `PostUpdateInput`) |
 | Menu HUD / cursor | `MenuDrawSystem.cs`, `UiDrawSpace.cs`, `ToastManager.cs` |

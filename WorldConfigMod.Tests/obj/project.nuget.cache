@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZBzpz7J0MJc=",
+  "dgSpecHash": "RFd8s5qOYlM=",
   "success": true,
-  "projectFilePath": "c:\\Users\\home\\Desktop\\Terraria-World-Config-Mod\\WorldConfigMod.Tests\\WorldConfigMod.Tests.csproj",
+  "projectFilePath": "C:\\Users\\home\\Desktop\\Terraria-World-Config-Mod\\WorldConfigMod.Tests\\WorldConfigMod.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\home\\.nuget\\packages\\microsoft.codecoverage\\17.11.1\\microsoft.codecoverage.17.11.1.nupkg.sha512",
     "C:\\Users\\home\\.nuget\\packages\\microsoft.net.test.sdk\\17.11.1\\microsoft.net.test.sdk.17.11.1.nupkg.sha512",

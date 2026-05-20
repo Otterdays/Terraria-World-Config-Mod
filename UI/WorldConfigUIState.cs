@@ -110,6 +110,17 @@ public class WorldConfigUIState : UIState
             TextColor = new Color(220, 230, 255),
         });
 
+        var tryV2 = new UITextButton("Try New UI →", 130f, 28f, () =>
+        {
+            WorldGenConfig.UseV2Panel = true;
+            UIInjectSystem.ReopenConfigMenu();
+        });
+        tryV2.HAlign = 0.5f;
+        tryV2.VAlign = 0.5f;
+        tryV2.BaseColor = new Color(80, 120, 60);
+        tryV2.HoverColor = new Color(120, 180, 90);
+        header.Append(tryV2);
+
         var toggleRow = new UIElement
         {
             Width = StyleDimension.FromPixels(320f),

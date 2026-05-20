@@ -6,7 +6,10 @@
       "WebFetch(domain:github.com)",
       "Bash(cmd.exe /c build.bat)",
       "Bash(dotnet build *)",
-      "PowerShell(dotnet build \"C:\\\\Users\\\\home\\\\Documents\\\\My Games\\\\Terraria\\\\tModLoader\\\\ModSources\\\\WorldConfigMod\\\\WorldConfigMod.csproj\" -c Release -v minimal 2>&1)"
+      "PowerShell(dotnet build \"C:\\\\Users\\\\home\\\\Documents\\\\My Games\\\\Terraria\\\\tModLoader\\\\ModSources\\\\WorldConfigMod\\\\WorldConfigMod.csproj\" -c Release -v minimal 2>&1)",
+      "Bash(config\" ; echo \"---\"; ls \"C:\\\\Users\\\\home\\\\Documents\\\\My Games\\\\Terraria\\\\tModLoader\\\\ModSources\\\\\")",
+      "Bash(rm \"/c/Users/home/Documents/My Games/Terraria/tModLoader/Mods/Terraria-World-Config-Mod.tmod\" && echo \"deleted bad .tmod\" && ls \"/c/Users/home/Documents/My Games/Terraria/tModLoader/Mods/\" | grep -iE \"world|config|terraria\")",
+      "PowerShell(& \"C:\\\\Users\\\\home\\\\Desktop\\\\Terraria-World-Config-Mod\\\\build.bat\" 2>&1)"
     ]
   }
 }

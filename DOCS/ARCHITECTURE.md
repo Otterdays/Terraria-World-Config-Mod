@@ -120,3 +120,36 @@ sequenceDiagram
 | **Layout** | `Main.screenWidth/Height` (÷ `UIScale` on draw via `UIScaleMatrix`) | `Main.MenuUI` config panel, in-world `ModifyInterfaceLayers` toasts |
 
 `ModifyInterfaceLayers` does not run on `Main.gameMenu` — menu toasts must use `On_Main.DrawMenu`. Do not nest `UserInterface.Draw` inside `SpriteBatch.Begin(UIScaleMatrix)` (double-scale).
+
+## [AMENDED 2026-05-20]: V2 UI + FeatureGen + MenuUI (current)
+
+> Supersedes older notes that used `menuMode 31337` or 1750×600 debug worlds. Config opens via **`Main.MenuUI.SetState`** only.
+
+```mermaid
+flowchart TD
+    A[tModLoader loads mod] --> B[ToastSystem OnModLoad]
+    B --> C[ToastManager queue]
+    A --> D[Main menu New World]
+    D --> E[UIInjectSystem detects UIWorldCreation]
+    E --> F[MenuDrawSystem DrawMenu: overlay + toasts framebuffer]
+    E --> G[Click World Config]
+    G --> H[Main.MenuUI.SetState V1 or V2]
+    H --> I[WorldGenConfig + OreCatalog]
+    I --> J{UseCustom?}
+    J -->|yes| K[WorldSizeSystem clearWorld]
+    J -->|yes| L[FeatureGenSystem caves dungeon features]
+    J -->|yes| M[OreGenSystem multi-hook ore gen]
+    J -->|no| N[Vanilla generation]
+```
+
+| System | Hook | Role |
+|--------|------|------|
+| `FeatureGenSystem` | `PreWorldGen`, `ModifyWorldGenTasks` inserts | Cave depth, dungeon side, gems, hearts, chests, islands, marble/granite supplements |
+| `UIInjectSystem` | `UpdateUI`, `PostUpdateInput` | V1 `WorldConfigUIState` + V2 `WorldConfigUIStateV2`; `UseV2Panel` picks active; `ReopenConfigMenu()` for mid-session swap |
+
+| UI | File | Notes |
+|----|------|-------|
+| Default panel | `WorldConfigUIStateV2.cs` | Sidebar nav, compact sliders, summary strip, ore filter |
+| Legacy panel | `WorldConfigUIState.cs` | Two-column; **Try New UI →** sets `UseV2Panel` |
+
+**Safe minimum world size:** 4200×1200 (`WorldGenConfig.MinWidth` / `MinHeight`). `ApplyDebugWorldGenPreset()` uses this floor with ×20 vein/frequency — not 1750×600 (vanilla `AddGenPasses` crashes below Small).
