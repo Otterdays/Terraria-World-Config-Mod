@@ -1,0 +1,8 @@
+displayName = World Config
+author = You
+version = 0.1
+homepage =
+buildIgnore = *.csproj.user, *.suo, .vs/*, bin/*, obj/*, .git/*, .gitignore, .gitattributes, README.md, DOCS/*
+hideCode = false
+hideResources = false
+includeSource = true

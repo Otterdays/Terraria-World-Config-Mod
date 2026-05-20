@@ -1,0 +1,122 @@
+<!-- PRESERVATION RULE: Never delete or replace content. Append or annotate only. -->
+
+# ARCHITECTURE
+
+## Overview
+
+```mermaid
+flowchart TD
+    A[tModLoader loads mod] --> B[ToastSystem OnModLoad]
+    B --> C[ToastManager queue]
+    A --> D[Main menu New World]
+    D --> E[UIInjectSystem detects UIWorldCreation]
+    E --> F[MenuDrawSystem draws overlay button + toasts]
+    E --> G[Click opens menuMode 31337]
+    G --> H[MenuDrawSystem UpdateConfigInterface + Draw]
+    H --> I[WorldConfigUIState two-column UI]
+    I --> J[WorldGenConfig + OreCatalog]
+    J --> K{UseCustom?}
+    K -->|yes| L[WorldSizeSystem clearWorld]
+    K -->|yes| M[OreGenSystem multi-hook ore gen]
+    K -->|no| N[Vanilla generation]
+    C --> O[ToastSystem ModifyInterfaceLayers in-world]
+```
+
+## Systems
+
+| System | Hook | Role |
+|--------|------|------|
+| `UIInjectSystem` | `UpdateUI` (overlay only), `HandleOverlayInput`, `UpdateConfigInterface` | Detect New World screen; overlay clicks; **config panel input tick** |
+| `MenuDrawSystem` | `On_Main.DrawMenu` | Draw overlay + config UI; call `UpdateConfigInterface` before draw in mode 31337 |
+| `ToastSystem` | `OnModLoad`, `ModifyInterfaceLayers` | Load toast; in-world toast layer |
+| `ToastManager` | static | Toast queue + draw |
+| `WorldSizeSystem` | `On_WorldGen.clearWorld` | Set `maxTilesX/Y` before alloc |
+| `OreGenSystem` | `ModifyWorldGenTasks`, `ModifyHardmodeTasks`, `On_WorldGen.SmashAltar`, `On_WorldGen.dropMeteor` | Ore scatter + supplements |
+
+## Core (testable, no Terraria)
+
+| Module | Role |
+|--------|------|
+| `OreCatalog` | 21 wiki ores, phases, UI keys |
+| `OreGenMath` | Vein count/size calculations |
+| `OreConfigHelper` | Default `OreMul` dict, reset, validation |
+
+## Ore generation (when `UseCustom`)
+
+| Phase | Mechanism |
+|-------|-----------|
+| Pre-HM metals + evil + rare meteorite | Replace **Shinies** pass (`OreScatterRunner`) |
+| Hellstone | Insert pass after **Underworld** |
+| Chlorophyte | Append pass in `ModifyHardmodeTasks` |
+| HM altar ores | Supplement after `SmashAltar` |
+| Meteor biomes | Supplement on `dropMeteor` |
+
+Tile specs: `Common/Ore/OreScatterSpecs.cs`. Obsidian + Luminite catalogued but not world-gen controlled.
+
+## UI architecture
+
+- **Overlay button:** drawn via `SpriteBatch` on vanilla `UIWorldCreation` (no vanilla tree mutation).
+- **Config panel:** custom `UIState` via standalone `UserInterface`; `Main.menuMode = 31337`.
+- **Layout:** near-fullscreen two columns — left: world size; right: scrollable ore sliders.
+- **Input path:** `MenuDrawSystem` → `UpdateConfigInterface` → `UserInterface.Update` (not `UpdateUI` alone).
+- **Scroll:** `UIScrollColumn` + `ApplyScrollWheel` + `PlayerInput.LockVanillaMouseScroll`.
+
+Opening config saves `Main.MenuUI.CurrentState` and restores on close.
+
+## Settings model
+
+`WorldGenConfig` — session-scoped statics: dimensions, `UseCustom`, vein/frequency multipliers, `OreMul` from `OreConfigHelper.CreateDefaultOreMul()` (21 keys). **`ApplyDebugWorldGenPreset()`** — 1750×600, ×20 vein/frequency.
+
+## Tests & build
+
+```
+Core/  ──linked──►  WorldConfigMod.Tests/  (test.bat, 23 tests)
+repo/  ──robocopy──►  ModSources/WorldConfigMod/  (excludes DOCS, Tests)
+                              │
+                              ▼
+                         WorldConfigMod.tmod
+```
+
+Detection: Steam registry → `tModLoader.dll`. `build.bat` repo-only; excludes `DOCS/`, `WorldConfigMod.Tests/`.
+
+## [AMENDED 2026-05-19]:
+
+Documented toast layer and overlay-button refactor. Build path updated for modern tML (no standalone `.exe`).
+
+## [AMENDED 2026-05-19]: Ore catalog + multi-hook gen
+
+Full ore pipeline, `Core/` test layer, `EXPANSIONS.md` roadmap reference.
+
+## [AMENDED 2026-05-19]: UI input + scroll architecture
+
+Documented `UpdateConfigInterface`, `UIScrollColumn`, two-column layout. Config menu input driven from `MenuDrawSystem`, not vanilla menu UI tick.
+
+## [AMENDED 2026-05-20]: Menu draw order (current)
+
+```mermaid
+sequenceDiagram
+    participant DM as DrawMenu orig
+    participant MD as MenuDrawSystem
+    participant UI as UIInjectSystem
+    DM->>DM: Vanilla menu + cursor
+    MD->>MD: Begin Identity, viewport coords
+    MD->>MD: Toasts + overlay button
+    MD->>MD: End batch
+    MD->>MD: RedrawMenuCursor UIScaleMatrix
+```
+
+| Step | Code |
+|------|------|
+| Detect New World | `UIInjectSystem.ShouldDrawOverlay()` → `UIWorldCreation` |
+| Overlay input | `PostUpdateInput` → `HandleOverlayInput` (`mouseX`/`mouseY`) |
+| Open panel | `Main.MenuUI.SetState(WorldConfigUIState)` |
+| Panel input | `UpdateUI` → `Main.MenuUI.Update`; scroll in `PostUpdateInput` |
+
+## [AMENDED 2026-05-20]: Menu HUD — framebuffer vs layout
+
+| Space | Source | Used for |
+|-------|--------|----------|
+| **Framebuffer** | `GraphicsDevice.Viewport` | `MenuDrawSystem` toasts + overlay (`Matrix.Identity`, `mouseX`/`mouseY`) |
+| **Layout** | `Main.screenWidth/Height` (÷ `UIScale` on draw via `UIScaleMatrix`) | `Main.MenuUI` config panel, in-world `ModifyInterfaceLayers` toasts |
+
+`ModifyInterfaceLayers` does not run on `Main.gameMenu` — menu toasts must use `On_Main.DrawMenu`. Do not nest `UserInterface.Draw` inside `SpriteBatch.Begin(UIScaleMatrix)` (double-scale).

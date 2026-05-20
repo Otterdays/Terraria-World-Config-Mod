@@ -1,0 +1,3 @@
+World Config — full control over world size and ore generation.
+Adds a "World Config" overlay button on the New World screen, toast notifications on load,
+and sliders for custom dimensions and per-ore frequency / vein size before generation runs.

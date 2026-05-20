@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\\\Users\\\\home\\\\Desktop\\\\Terraria-World-Config-Mod\")",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(cmd.exe /c build.bat)",
+      "Bash(dotnet build *)",
+      "PowerShell(dotnet build \"C:\\\\Users\\\\home\\\\Documents\\\\My Games\\\\Terraria\\\\tModLoader\\\\ModSources\\\\WorldConfigMod\\\\WorldConfigMod.csproj\" -c Release -v minimal 2>&1)"
+    ]
+  }
+}
