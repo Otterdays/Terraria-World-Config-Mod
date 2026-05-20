@@ -34,16 +34,23 @@ public class UIInjectSystem : ModSystem
     {
         _configState = new WorldConfigUIState();
         _configState.Activate();
+        _configStateV2 = new WorldConfigUIStateV2();
+        _configStateV2.Activate();
     }
 
     public override void Unload()
     {
         _configState = null;
+        _configStateV2 = null;
         _returnMenuState = null;
     }
 
     public static bool IsConfigMenuOpen() =>
-        Main.MenuUI?.CurrentState is WorldConfigUIState;
+        Main.MenuUI?.CurrentState is WorldConfigUIState
+        || Main.MenuUI?.CurrentState is WorldConfigUIStateV2;
+
+    private static UIState ActiveConfigState() =>
+        WorldGenConfig.UseV2Panel ? (UIState)_configStateV2 : _configState;
 
     public static bool ShouldDrawOverlay() =>
         !IsConfigMenuOpen()
@@ -160,14 +167,29 @@ public class UIInjectSystem : ModSystem
     public static void OpenConfigMenu()
     {
         _returnMenuState = Main.MenuUI?.CurrentState;
-        _configState?.Refresh();
-        Main.MenuUI?.SetState(_configState);
+        if (WorldGenConfig.UseV2Panel)
+            _configStateV2?.Refresh();
+        else
+            _configState?.Refresh();
+        Main.MenuUI?.SetState(ActiveConfigState());
         Main.MenuUI?.Recalculate();
         _recalcFramesRemaining = 3;
         _lastScreenW = Main.screenWidth;
         _lastScreenH = Main.screenHeight;
         _lastMouseScroll = Mouse.GetState().ScrollWheelValue;
         _lastConfigUpdateFrame = uint.MaxValue;
+    }
+
+    // Swap V1 <-> V2 without resetting return state. Called by in-panel toggle buttons.
+    public static void ReopenConfigMenu()
+    {
+        if (WorldGenConfig.UseV2Panel)
+            _configStateV2?.Refresh();
+        else
+            _configState?.Refresh();
+        Main.MenuUI?.SetState(ActiveConfigState());
+        Main.MenuUI?.Recalculate();
+        _recalcFramesRemaining = 3;
     }
 
     public static void CloseConfigMenu()
