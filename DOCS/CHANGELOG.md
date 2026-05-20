@@ -6,10 +6,24 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Changed (2026-05-20 — overlay button redesign)
+
+- **World Config overlay button** (`UIInjectSystem.DrawOverlayButton`) — complete visual redesign:
+  - Size: 300×54 → **340×62** px
+  - Background: solid fill → **3-band vertical gradient** (top/mid/bot) in blue (OFF) or green (ON), brightens on hover
+  - **Inner highlight** (1px under top border) + **bottom shadow** (1px above bottom border) for depth
+  - **5px left accent strip** — green when custom ON, red-brown when OFF; glows brighter on hover
+  - **2px border** all sides — color-coded to match state (green/blue), brightens on hover
+  - **Pixel-art cog icon** (`DrawCogIcon`) — 18×18, 8-spoke star from MagicPixel rectangles; drawn left of title
+  - **Title** — "World Config" at `0.95f` scale, positioned to right of cog
+  - **Subtitle** (state-aware) — when OFF: *"click to customize world generation"*; when ON: *"applies on next world create · N change(s)"*
+  - **Status pill** (`DrawStatusPill`) — 70×26 pill on right edge; colored dot + "ON"/"OFF" text; green bg when ON, dark-red when OFF
+  - **Custom status badge** below button (when ON) unchanged — still shows `W×H ore ×freq · ×veins`
+
 ### Changed
 
 - **README.md** — GitHub layout with centered `banner.svg`, shields, V2 UI + tier-1 features, corrected 4200×1200 minimum and debug preset.
-- **`banner.svg`** — green CUSTOM ON badge, two-line footer (features + v0.1).
+- **`banner.svg`** — full redesign: V2 UI mockup, world cross-section, starfield/nebula, faceted crystals, feature pills, dual slider card, vignette.
 - **DOCS** — ARCHITECTURE / MODDING_GUIDE / AGENTS / SUMMARY synced after audit (removed stale `menuMode 31337` guidance in new amendments).
 - **Section headings (V2 panel)** — scale 0.85→0.70 (no bold); now rendered in a 20px dark-blue pill panel with 6px spacer above; prevents Terraria font blowout in every tab.
 - **`UICompactSliderRow`** — bar capped at 420px max width (was unbounded; stretched 900px+ on wide panel); row height 22→26px for breathing room; label width params exposed per-callsite.

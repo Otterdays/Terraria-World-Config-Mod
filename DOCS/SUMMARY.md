@@ -49,6 +49,19 @@ Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects in
 - Custom dimensions below vanilla Small (4200×1200) cause world-gen crashes in vanilla `AddGenPasses` (hardcoded range inversions).
 - Multiplayer config sync not implemented.
 
+## [AMENDED 2026-05-20]: Overlay button redesign (shipped)
+
+| Change | Detail |
+|--------|--------|
+| Button size | 300×54 → 340×62 px |
+| Background | Solid fill → 3-band vertical gradient; blue (OFF) / green (ON); brightens on hover |
+| Left accent strip | 5px full-height strip; green ON / red-brown OFF; glow on hover |
+| Border | 2px all sides, color-coded (green/blue), hover-brightens |
+| Cog icon | Pixel-art 18×18 8-spoke star via `DrawCogIcon` (MagicPixel rects); left of title |
+| Title | "World Config" 0.95f, right of cog |
+| Subtitle | State-aware: call-to-action (OFF) or change count (ON) |
+| Status pill | 70×26 right-edge pill via `DrawStatusPill`: colored dot + ON/OFF text |
+
 ## [AMENDED 2026-05-20]: V2 visual polish pass 2 (shipped)
 
 | Change | Detail |
