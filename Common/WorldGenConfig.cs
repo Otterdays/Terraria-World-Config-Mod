@@ -5,12 +5,11 @@ namespace WorldConfigMod.Common;
 
 public static class WorldGenConfig
 {
-    // Vanilla Small (4200x1200) is the lowest size vanilla world gen passes survive.
-    // Below this, hardcoded UnifiedRandom.Next(min, max) ranges in vanilla AddGenPasses invert.
-    public const int MinWidth = 4200;
-    public const int MaxWidth = 16800;
-    public const int MinHeight = 1200;
-    public const int MaxHeight = 4800;
+    // Terraria 1.4.4.9 Small — lowest size vanilla AddGenPasses survive.
+    public const int MinWidth = TerrariaVanillaSpecs.MinSafeWidth;
+    public const int MaxWidth = TerrariaVanillaSpecs.ModMaxWidth;
+    public const int MinHeight = TerrariaVanillaSpecs.MinSafeHeight;
+    public const int MaxHeight = TerrariaVanillaSpecs.ModMaxHeight;
 
     public static bool UseCustom = false;
 
@@ -93,13 +92,10 @@ public static class WorldGenConfig
 
     public static void ApplyPresetSize(int preset)
     {
-        switch (preset)
+        if (TerrariaVanillaSpecs.TryGetPreset(preset, out var p))
         {
-            case 1: WorldWidth = 4200; WorldHeight = 1200; break;
-            case 2: WorldWidth = 6400; WorldHeight = 1800; break;
-            case 3: WorldWidth = 8400; WorldHeight = 2400; break;
-            case 4: WorldWidth = 12000; WorldHeight = 3600; break;
-            case 5: WorldWidth = 16800; WorldHeight = 4800; break;
+            WorldWidth = p.Width;
+            WorldHeight = p.Height;
         }
     }
 

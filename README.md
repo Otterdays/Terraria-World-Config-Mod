@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.svg" alt="World Config — Terraria tModLoader mod banner" width="100%" />
+  <img src="assets/banner.svg" alt="World Config — Terraria tModLoader mod banner" width="100%" />
 </p>
 
 <h1 align="center">World Config</h1>
@@ -14,6 +14,7 @@
   <a href="#usage">Usage</a> ·
   <a href="#settings">Settings</a> ·
   <a href="#tests">Tests</a> ·
+  <a href="index.html">Full docs site</a> ·
   <a href="DOCS/SUMMARY.md">Developer docs</a>
 </p>
 
@@ -46,8 +47,12 @@ No world edit tools. No post-gen cheats. Everything applies at generation time.
 | **V2 UI** *(default)* | Sidebar tabs, live summary strip, diff dots, vanilla % badges, ore name filter |
 | **V1 UI** | Classic two-column panel — swap anytime via **Try New UI** / **Legacy Panel** |
 | **HUD** | Green **● ON** button + status line when custom gen is active; load toast on New World |
+| **Persistence** | Settings saved to `WorldConfigMod_settings.txt` in your tModLoader save folder |
+| **30+ controls** | Features tab: hives, traps, lakes, pyramids, spread toggles, preset bundles |
 
 When **Use Custom Generation** is **OFF**, Terraria behaves exactly as stock.
+
+**Full documentation:** open [`index.html`](index.html) locally or enable [GitHub Pages](DOCS/WEBSITE.md) on this repo for the hosted site (Quick Start, every slider, ore catalog, troubleshooting).
 
 ---
 
@@ -90,7 +95,7 @@ Unit tests (no game required): `test.bat` or `dotnet test WorldConfigMod.Tests`
 3. Turn **Use Custom Generation** **ON**, tweak tabs (World / Shape / Features / Ores / Presets), or hit **DEBUG: Tiny + 20× Ore** for a fast test world.
 4. **Apply & Back**, then vanilla **Create**.
 
-> Settings live in memory for the session. Re-open the panel before each new world to confirm values.
+> Settings persist between game sessions (`WorldConfigMod_settings.txt`). Re-open the panel before each **new world** to confirm values for that run.
 
 **UI tips (V2):** sidebar shows `●N` when a category differs from vanilla; the summary strip updates live; use the ore filter on the Ores tab; switch to V1 anytime from the header.
 
@@ -141,7 +146,8 @@ UI/
 WorldConfigMod.Tests/    23 xUnit tests
 DOCS/                    Architecture, modding guide, roadmap (dev-only)
 build.bat / test.bat     Build .tmod / run tests (not shipped in .tmod)
-banner.svg               GitHub social preview (1200×630)
+index.html + app.js      GitHub Pages docs site (not shipped in .tmod)
+assets/banner.svg        Social preview + site hero (1200×630)
 ```
 
 **For contributors & agents:** [`AGENTS.md`](AGENTS.md) · [`DOCS/MODDING_GUIDE.md`](DOCS/MODDING_GUIDE.md) · [`DOCS/ARCHITECTURE.md`](DOCS/ARCHITECTURE.md) · [`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md)
@@ -166,7 +172,6 @@ banner.svg               GitHub social preview (1200×630)
 ## Caveats
 
 - **Experimental sizes** above vanilla Large can stress dungeon/jungle/temple placement — sweet spot often 4200–12000 wide.
-- **No persistence yet** — settings reset when you quit the game.
 - **Single-player tested** — multiplayer config sync not implemented.
 - **Windows-first build script** — other OS: copy to ModSources + `dotnet build` / `dotnet test`.
 

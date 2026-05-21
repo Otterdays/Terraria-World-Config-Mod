@@ -6,12 +6,17 @@
 
 - [x] Menu HUD coords — framebuffer `Viewport` + `Identity` in `DrawMenu` (verified 2026-05-20)
 - [x] Cursor behind World Config button — `RedrawMenuCursor()` after overlay (verified 2026-05-20)
+- [x] GitHub Pages site — `index.html` / `styles.css` / `app.js` + workflow + `DOCS/WEBSITE.md`
+- [x] `assets/banner.svg` v3 — expanded hero; root `banner.svg` removed
+- [x] `AGENTS.md` — Pages, layout, doc checklist, persistence
+- [ ] Enable GitHub Pages in repo Settings (manual, user)
 - [ ] Verify config panel clicks / scroll on full config panel (manual)
 - [ ] `build.bat` when tML closed (last run: tests OK, build blocked — game open)
 
 ## Last 5 actions (2026-05-20)
 
-1. **`banner.svg` v2** — V2 panel mock, world layers, nebula/starfield, 8 faceted gems, feature pills, vignette.
+1. **Project audit + web** — SPA docs site, banner → `assets/`, build exclusions, README persistence fix.
+2. **`banner.svg` v2** — V2 panel mock, world layers, nebula/starfield, 8 faceted gems, feature pills, vignette.
 2. **Docs audit** — GitHub README + `banner.svg`; fixed stale 1750×600 / V1-only README; ARCHITECTURE + AGENTS + MODDING_GUIDE amendments; 23/23 tests.
 2. Fixed cursor Z-order — `RedrawMenuCursor()` with closed batch + `UIScaleMatrix` for `DrawCursor`.
 2. Menu HUD uses `GraphicsDevice.Viewport` (not `Main.screenWidth`) for toasts + overlay button.

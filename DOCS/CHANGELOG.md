@@ -6,6 +6,15 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added (2026-05-20 — GitHub Pages site + repo layout)
+
+- **Public docs site** — `index.html`, `styles.css`, `app.js` at repo root; hash-routed SPA (Home, Quick Start, Features, Settings, Ores, Install, Advanced, Contribute).
+- **`assets/banner.svg` v3** — expanded hero (moon, meteor, dungeon, pyramid, hive, spider web, 11 gems, save badge, feature pills); moved from repo root.
+- **`DOCS/WEBSITE.md`** — Pages deploy + agent maintenance checklist.
+- **`.github/workflows/github-pages.yml`** — deploys site bundle only (not full mod tree).
+- **`build.bat`** — robocopy excludes `assets/`, `.github/`, web root files from ModSources mirror.
+- **`AGENTS.md`** — GitHub Pages section, doc checklist, persistence note, updated layout map.
+
 ### Added (2026-05-20 — 10 more features: features wave 2 + ore meta + preset bundles)
 
 All gated on `WorldGenConfig.UseCustom`. Build: 109,789 bytes.

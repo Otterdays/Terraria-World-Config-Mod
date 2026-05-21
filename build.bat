@@ -50,8 +50,8 @@ echo            From: !MOD_SRC_DIR!
 echo            To:   !TARGET_SRC!
 robocopy "!MOD_SRC_DIR!" "!TARGET_SRC!" ^
     /MIR ^
-    /XD bin obj .git .vs .claude .idea node_modules DOCS WorldConfigMod.Tests ^
-    /XF build.bat *.user *.suo .gitignore .gitattributes ^
+    /XD bin obj .git .vs .claude .idea node_modules DOCS WorldConfigMod.Tests assets .github ^
+    /XF build.bat *.user *.suo .gitignore .gitattributes index.html styles.css app.js .nojekyll ^
     /NFL /NDL /NJH /NJS /NC /NS /NP >nul
 set "RC=!ERRORLEVEL!"
 if !RC! GEQ 8 (

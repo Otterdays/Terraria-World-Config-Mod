@@ -3,13 +3,15 @@
 # World Config Mod — Project Summary
 
 **Status:** Active · tModLoader 1.4.4+ / net8.0 · **23/23 tests pass** · menu HUD + cursor verified in-game · custom world indicator live · V2 sidebar panel built  
-**Last updated:** 2026-05-20 (docs audit + GitHub README refresh)
+**Last updated:** 2026-05-20 (GitHub Pages site + banner v3 + AGENTS refresh)
 
 ## Quick links
 
 | Doc | Purpose |
 |-----|---------|
+| [index.html](../index.html) | **Public docs site** (GitHub Pages) — quick start + full reference |
 | [README.md](../README.md) | User-facing install, usage, troubleshooting |
+| [DOCS/WEBSITE.md](WEBSITE.md) | Pages deploy + site maintenance |
 | [AGENTS.md](../AGENTS.md) | **AI agent instructions** — read before coding |
 | [MODDING_GUIDE.md](MODDING_GUIDE.md) | **Beginner guide** — edit, build, recipes |
 | [EXPANSIONS.md](EXPANSIONS.md) | **Expansion roadmap** — future world-gen hooks |

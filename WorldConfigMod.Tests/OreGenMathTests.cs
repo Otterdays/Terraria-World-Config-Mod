@@ -8,10 +8,11 @@ public class OreGenMathTests
     [Fact]
     public void ComputeVeinCount_ScalesWithMultipliers()
     {
-        long area = 4200L * 1200L;
-        int baseline = OreGenMath.ComputeVeinCount(area, 9e-5f, 1f, 1f);
-        int doubled = OreGenMath.ComputeVeinCount(area, 9e-5f, 2f, 1f);
-        int oreDoubled = OreGenMath.ComputeVeinCount(area, 9e-5f, 1f, 2f);
+        long area = TerrariaVanillaSpecs.TileArea(4200, 1200);
+        float freq = TerrariaVanillaSpecs.CopperTinBaseFrequency;
+        int baseline = OreGenMath.ComputeVeinCount(area, freq, 1f, 1f);
+        int doubled = OreGenMath.ComputeVeinCount(area, freq, 2f, 1f);
+        int oreDoubled = OreGenMath.ComputeVeinCount(area, freq, 1f, 2f);
 
         Assert.True(baseline > 0);
         Assert.InRange(doubled, baseline * 2 - 1, baseline * 2 + 1);
@@ -39,7 +40,10 @@ public class OreGenMathTests
     [Fact]
     public void ComputeVeinSize_ScalesUp()
     {
-        var (strength, steps) = OreGenMath.ComputeVeinSize(4, 5, 3f);
+        var (strength, steps) = OreGenMath.ComputeVeinSize(
+            TerrariaVanillaSpecs.CopperBaseStrength,
+            TerrariaVanillaSpecs.CopperBaseSteps,
+            3f);
         Assert.Equal(12, strength);
         Assert.Equal(15, steps);
     }
