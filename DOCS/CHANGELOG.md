@@ -6,6 +6,17 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added (2026-05-20 — Terraria 1.4.4.9 / tML 2026.3.3.0 + vanilla-mimic tests)
+
+- **`Core/TerrariaVanillaSpecs.cs`** — pinned game/tML versions, world presets S–XXL, copper frequency, feature `2 + width/4200` scaling.
+- **`TerrariaVanillaSpecsTests`**, **`TerrariaOreGenMathTests`** — vein counts at Small/Medium/Large, area linearity, cap behavior, supplemental formula.
+- **`DOCS/VERSIONS.md`** — canonical version table.
+- **`WorldGenConfig`** — min/max and `ApplyPresetSize` delegate to `TerrariaVanillaSpecs`.
+
+### Changed (2026-05-20 — version pins)
+
+- SBOM, AGENTS, README, site (`index.html`, `app.js`) — **Terraria 1.4.4.9**, **tModLoader 2026.3.3.0**.
+
 ### Added (2026-05-20 — GitHub Pages site + repo layout)
 
 - **Public docs site** — `index.html`, `styles.css`, `app.js` at repo root; hash-routed SPA (Home, Quick Start, Features, Settings, Ores, Install, Advanced, Contribute).

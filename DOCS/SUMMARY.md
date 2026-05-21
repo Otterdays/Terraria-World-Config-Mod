@@ -2,8 +2,8 @@
 
 # World Config Mod — Project Summary
 
-**Status:** Active · tModLoader 1.4.4+ / net8.0 · **23/23 tests pass** · menu HUD + cursor verified in-game · custom world indicator live · V2 sidebar panel built  
-**Last updated:** 2026-05-20 (GitHub Pages site + banner v3 + AGENTS refresh)
+**Status:** Active · **Terraria 1.4.4.9** · **tModLoader 2026.3.3.0** · net8.0 · unit tests (Terraria vanilla specs) · V2 sidebar · settings persistence  
+**Last updated:** 2026-05-20 (version pin + TerrariaVanillaSpecs tests)
 
 ## Quick links
 
@@ -12,6 +12,7 @@
 | [index.html](../index.html) | **Public docs site** (GitHub Pages) — quick start + full reference |
 | [README.md](../README.md) | User-facing install, usage, troubleshooting |
 | [DOCS/WEBSITE.md](WEBSITE.md) | Pages deploy + site maintenance |
+| [DOCS/VERSIONS.md](VERSIONS.md) | Pinned Terraria / tModLoader versions |
 | [AGENTS.md](../AGENTS.md) | **AI agent instructions** — read before coding |
 | [MODDING_GUIDE.md](MODDING_GUIDE.md) | **Beginner guide** — edit, build, recipes |
 | [EXPANSIONS.md](EXPANSIONS.md) | **Expansion roadmap** — future world-gen hooks |
@@ -38,7 +39,7 @@ When **Use Custom Generation** is ON, controls:
 ## Build & test
 
 ```bat
-test.bat    # unit tests (Core/, no game)
+test.bat    # 51 unit tests (Core/, Terraria 1.4.4.9 specs, no game)
 build.bat   # .tmod (close tModLoader first)
 ```
 

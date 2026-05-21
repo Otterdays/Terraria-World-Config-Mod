@@ -343,7 +343,7 @@
   </g>
 
   <g text-anchor="middle" font-family="Segoe UI, Verdana, sans-serif">
-    <text x="600" y="598" font-size="13" font-weight="600" fill="#5a73b4" letter-spacing="3">tModLoader 1.4.4+ · net8.0 · WorldConfigMod · 23 tests</text>
+    <text x="600" y="598" font-size="12" font-weight="600" fill="#5a73b4" letter-spacing="2">Terraria 1.4.4.9 · tModLoader 2026.3.3.0 · net8.0 · WorldConfigMod</text>
   </g>
 
   <rect width="1200" height="630" fill="url(#vignette)" pointer-events="none"/>

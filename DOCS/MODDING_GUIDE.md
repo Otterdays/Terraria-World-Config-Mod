@@ -5,7 +5,7 @@
 **Who this is for:** You want to change this mod but you've never (or barely) touched C# or tModLoader. No shame — this guide assumes that.
 
 **What you'll need:**
-- [tModLoader](https://store.steampowered.com/app/1281930/tModLoader/) on Steam
+- [tModLoader](https://store.steampowered.com/app/1281930/tModLoader/) **2026.3.3.0** on Steam (Terraria **1.4.4.9**)
 - This repo on your PC
 - A text editor (VS Code, Cursor, Notepad++ — anything)
 - **Close tModLoader** before running `build.bat`

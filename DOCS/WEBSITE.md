@@ -2,7 +2,7 @@
 
 # GitHub Pages — World Config public site
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-05-20 (Terraria 1.4.4.9 / tModLoader 2026.3.3.0)
 
 ## Purpose
 

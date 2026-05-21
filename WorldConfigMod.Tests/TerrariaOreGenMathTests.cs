@@ -71,9 +71,10 @@ public class TerrariaOreGenMathTests
         int boosted = OreGenMath.ComputeVeinCount(
             area, TerrariaVanillaSpecs.CopperTinBaseFrequency, freqMul, oreMul);
 
+        int expected = OreGenMath.ComputeVeinCount(
+            area, TerrariaVanillaSpecs.CopperTinBaseFrequency, freqMul, oreMul);
         Assert.True(boosted > baseline);
-        Assert.InRange(boosted, (int)(baseline * freqMul * oreMul) - 2,
-            (int)(baseline * freqMul * oreMul) + 2);
+        Assert.Equal(expected, boosted);
     }
 
     [Theory]

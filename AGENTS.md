@@ -2,7 +2,7 @@
 
 Instructions for AI coding agents (Cursor, Claude Code, etc.) working in this repo.
 
-**Last agent run:** 2026-05-20 — GitHub Pages site, `assets/banner.svg`, doc sync. **Update this file every session** when layout, workflows, or agent rules change.
+**Last agent run:** 2026-05-20 — Terraria **1.4.4.9** / tML **2026.3.3.0** pin, `TerrariaVanillaSpecs` + expanded tests. **Update this file every session** when layout, workflows, or agent rules change.
 
 ## Project
 
@@ -10,7 +10,7 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working in this re
 
 | Item | Value |
 |------|--------|
-| Target | tModLoader 1.4.4+ (Terraria 1.4.4), `net8.0` |
+| Target | tModLoader **2026.3.3.0** (Terraria **1.4.4.9**), `net8.0` |
 | Build | `build.bat` (close tModLoader first) |
 | Tests | `test.bat` or `dotnet test WorldConfigMod.Tests` |
 | Mod output | `%USERPROFILE%\Documents\My Games\Terraria\tModLoader\Mods\WorldConfigMod.tmod` |
@@ -25,6 +25,7 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working in this re
 4. [`DOCS/EXPANSIONS.md`](DOCS/EXPANSIONS.md) — planned world-gen features  
 5. [`DOCS/STYLE_GUIDE.md`](DOCS/STYLE_GUIDE.md) — conventions  
 6. [`DOCS/WEBSITE.md`](DOCS/WEBSITE.md) — GitHub Pages + user-facing site maintenance  
+7. [`DOCS/VERSIONS.md`](DOCS/VERSIONS.md) — pinned Terraria / tML versions  
 
 `DOCS/` is **not** mirrored to ModSources by `build.bat` — dev-only.
 
@@ -38,6 +39,7 @@ index.html, styles.css, app.js — GitHub Pages SPA (excluded from .tmod mirror)
 Core/                          — testable logic (no Terraria refs)
   OreCatalog.cs                  — 21 wiki ores, phases, UI keys
   OreGenMath.cs, OreConfigHelper.cs
+  TerrariaVanillaSpecs.cs        — Terraria 1.4.4.9 sizes, ore freqs, feature scaling (tests + WorldGenConfig)
 
 Common/
   WorldGenConfig.cs              — session settings (static fields); UseV2Panel default true
@@ -137,11 +139,11 @@ Ore keys come from `Core/OreCatalog.cs`. UI lists `OreCatalog.WithMultipliers` (
 ## Testing
 
 ```bat
-test.bat          # 23 unit tests — Core catalog, math, config keys
+test.bat          # unit tests — Core catalog, Terraria vanilla specs, ore math, config keys
 build.bat         # full .tmod — requires tModLoader closed
 ```
 
-Add tests in `WorldConfigMod.Tests/` for any new **Core/** logic. Gameplay/world-gen behavior is manual in tModLoader.
+Add tests in `WorldConfigMod.Tests/` for any new **Core/** logic. Use `TerrariaVanillaSpecs` for world sizes / vanilla formulas — keep in sync with `OreScatterSpecs` and `FeatureGenSystem`. Gameplay is manual in tModLoader.
 
 ## Code standards (short)
 

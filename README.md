@@ -19,10 +19,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Terraria-1.4.4-5a73b4?style=flat-square" alt="Terraria 1.4.4" />
-  <img src="https://img.shields.io/badge/tModLoader-1.4.4%2B-f0a23a?style=flat-square" alt="tModLoader 1.4.4+" />
+  <img src="https://img.shields.io/badge/Terraria-1.4.4.9-5a73b4?style=flat-square" alt="Terraria 1.4.4.9" />
+  <img src="https://img.shields.io/badge/tModLoader-2026.3.3.0-f0a23a?style=flat-square" alt="tModLoader 2026.3.3.0" />
   <img src="https://img.shields.io/badge/.NET-net8.0-512bd4?style=flat-square" alt=".NET 8" />
-  <img src="https://img.shields.io/badge/tests-23%20passing-7ad36a?style=flat-square" alt="23 tests passing" />
+  <img src="https://img.shields.io/badge/tests-passing-7ad36a?style=flat-square" alt="unit tests passing" />
   <img src="https://img.shields.io/badge/version-0.1-9cb4ff?style=flat-square" alt="v0.1" />
 </p>
 
@@ -60,7 +60,7 @@ When **Use Custom Generation** is **OFF**, Terraria behaves exactly as stock.
 
 ### Quick path — `build.bat` (Windows)
 
-1. Install **tModLoader 1.4.4+** on Steam and launch it **once** (creates `ModSources` + `tModLoader.targets`).
+1. Install **tModLoader 2026.3.3.0** (Terraria **1.4.4.9**) on Steam and launch it **once** (creates `ModSources` + `tModLoader.targets`).
 2. **Close** tModLoader completely.
 3. Run **`build.bat`** in this repo (or `cmd /c build.bat` from PowerShell).
 4. In tModLoader: **Workshop → Mods** → enable **WorldConfigMod** → **Reload**.
@@ -134,7 +134,7 @@ Unit tests (no game required): `test.bat` or `dotnet test WorldConfigMod.Tests`
 ## Project layout
 
 ```
-Core/                    Ore catalog + math (unit-tested, no Terraria refs)
+Core/                    Ore catalog + math + TerrariaVanillaSpecs (unit-tested, no Terraria refs)
 Common/
   WorldGenConfig.cs      Session settings + presets + diff helpers
   Systems/               WorldSize, OreGen, FeatureGen, UI inject, menu draw, toasts
@@ -143,7 +143,7 @@ UI/
   WorldConfigUIStateV2   Sidebar panel (default)
   WorldConfigUIState     Legacy two-column panel
   Elements/              Sliders, scroll, compact rows, text input
-WorldConfigMod.Tests/    23 xUnit tests
+WorldConfigMod.Tests/    xUnit — Terraria 1.4.4.9 world sizes, ore math, catalog
 DOCS/                    Architecture, modding guide, roadmap (dev-only)
 build.bat / test.bat     Build .tmod / run tests (not shipped in .tmod)
 index.html + app.js      GitHub Pages docs site (not shipped in .tmod)
@@ -183,7 +183,7 @@ assets/banner.svg        Social preview + site hero (1200×630)
 test.bat
 ```
 
-23 tests — ore catalog (21 wiki types), vein math, config keys/defaults. Gameplay is manual in tModLoader.
+Unit tests cover ore catalog (21 wiki types), **Terraria Small/Medium/Large** vein counts, feature scaling (`2 + width/4200`), and config keys. See [`DOCS/VERSIONS.md`](DOCS/VERSIONS.md). Gameplay is manual in tModLoader.
 
 ---
 

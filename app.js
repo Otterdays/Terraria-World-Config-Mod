@@ -72,8 +72,9 @@
       title: "Master & dimensions",
       rows: [
         ["Use Custom Generation", "toggle", "OFF", "Must be ON for any custom effect"],
-        ["World width", "4200 – 16800", "4200", "Main.maxTilesX at clearWorld"],
+        ["World width", "4200 – 16800", "4200", "Main.maxTilesX at clearWorld (Terraria 1.4.4.9 Small min)"],
         ["World height", "1200 – 4800", "1200", "Main.maxTilesY at clearWorld"],
+        ["Vanilla presets", "S/M/L", "4200×1200 … 8400×2400", "XL/XXL are mod-only sizes"],
       ],
     },
     {
@@ -106,6 +107,19 @@
         ["Altar patch ×, meteor chance ×", "multiplier", "1", "Ore meta tab"],
       ],
     },
+  ];
+
+  const VERSIONS = {
+    terraria: "1.4.4.9",
+    tmodloader: "2026.3.3.0",
+  };
+
+  const WORLD_SIZES = [
+    { label: "Small (vanilla)", w: 4200, h: 1200, vanilla: true },
+    { label: "Medium (vanilla)", w: 6400, h: 1800, vanilla: true },
+    { label: "Large (vanilla)", w: 8400, h: 2400, vanilla: true },
+    { label: "XL (mod)", w: 12000, h: 3600, vanilla: false },
+    { label: "XXL (mod)", w: 16800, h: 4800, vanilla: false },
   ];
 
   const ORES = [
@@ -166,7 +180,21 @@
   function renderSettingsTables() {
     const el = document.getElementById("settingsTables");
     if (!el) return;
-    el.innerHTML = SETTINGS.map(
+    const worldRows = WORLD_SIZES.map((s) => [
+      s.label,
+      `${s.w}×${s.h}`,
+      s.vanilla ? "Terraria UI" : "Mod preset",
+      `${((s.w * s.h) / 1e6).toFixed(2)}M tiles`,
+    ]);
+    const versionNote = `<p class="subtitle">Target: Terraria <strong>${VERSIONS.terraria}</strong> · tModLoader <strong>${VERSIONS.tmodloader}</strong></p>`;
+    const worldTable = `<div class="feature-group"><h2>World size presets</h2>${tableHtml(
+      ["Preset", "Dimensions", "Source", "Area"],
+      worldRows
+    )}</div>`;
+    el.innerHTML =
+      versionNote +
+      worldTable +
+      SETTINGS.map(
       (g) =>
         `<div class="feature-group"><h2>${g.title}</h2>${tableHtml(
           ["Setting", "Range", "Default", "Notes"],

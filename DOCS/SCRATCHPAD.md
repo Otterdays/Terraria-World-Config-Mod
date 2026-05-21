@@ -9,13 +9,15 @@
 - [x] GitHub Pages site — `index.html` / `styles.css` / `app.js` + workflow + `DOCS/WEBSITE.md`
 - [x] `assets/banner.svg` v3 — expanded hero; root `banner.svg` removed
 - [x] `AGENTS.md` — Pages, layout, doc checklist, persistence
+- [x] Terraria **1.4.4.9** / tML **2026.3.3.0** — `TerrariaVanillaSpecs`, **51/51** tests
 - [ ] Enable GitHub Pages in repo Settings (manual, user)
 - [ ] Verify config panel clicks / scroll on full config panel (manual)
 - [ ] `build.bat` when tML closed (last run: tests OK, build blocked — game open)
 
 ## Last 5 actions (2026-05-20)
 
-1. **Project audit + web** — SPA docs site, banner → `assets/`, build exclusions, README persistence fix.
+1. **Terraria 1.4.4.9 / tML 2026.3.3.0** — `TerrariaVanillaSpecs`, expanded tests, VERSIONS.md, SBOM, WorldGenConfig presets.
+2. **Project audit + web** — SPA docs site, banner → `assets/`, build exclusions, README persistence fix.
 2. **`banner.svg` v2** — V2 panel mock, world layers, nebula/starfield, 8 faceted gems, feature pills, vignette.
 2. **Docs audit** — GitHub README + `banner.svg`; fixed stale 1750×600 / V1-only README; ARCHITECTURE + AGENTS + MODDING_GUIDE amendments; 23/23 tests.
 2. Fixed cursor Z-order — `RedrawMenuCursor()` with closed batch + `UIScaleMatrix` for `DrawCursor`.
