@@ -6,6 +6,46 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added (2026-05-20 — 10 more features: features wave 2 + ore meta + preset bundles)
+
+All gated on `WorldGenConfig.UseCustom`. Build: 109,789 bytes.
+
+- **Hives ×** — `SupplementHives`; jungle band scatter via `TileRunner(TileID.Hive)`. Capped at +12 extras.
+- **Mushroom Patches ×** — `SupplementMushroom`; `TileRunner(TileID.MushroomGrass)` cavern scatter, capped +8.
+- **Pyramids tri-state** (`PyramidsMode`: -1 disable / 0 vanilla / +1 boost) — disables pass at -1, inserts `SupplementPyramids` sand mound at +1.
+- **Traps ×** — `SupplementTraps`; `WorldGen.PlaceTile(TileID.Traps)` with random style 0-5 in cavern.
+- **Herbs ×** — `SupplementHerbs`; `PlaceTile(TileID.MatureHerbs)` random style 0-6 surface→cavern.
+- **Lakes ×** — `SupplementLakes`; carves bowl + sets `Main.tile[x,y].LiquidAmount=255` + `LiquidType=Water`. Capped +8.
+- **Shrines ×** — `SupplementShrines`; small stone alcove approximation (vanilla EnchantedSwordEntrance is private). Capped +6.
+- **Altar Patch ×** — `WorldGenConfig.AltarPatchMul` factors into existing `OnSmashAltar` formula → scales vanilla HM ore vein per smash.
+- **Meteor Chance ×** — `WorldGenConfig.MeteorChanceMul` factors into existing `OnDropMeteor` formula → biases meteor event payoff.
+- **Preset bundles** (Presets tab) — `ApplyResourceRichPreset` / `ApplyCaveLabyrinthPreset` / `ApplyMinimalEvilPreset`; one-click multi-field apply with toast confirmation. Force `UseCustom = true`.
+
+### Changed (2026-05-20 — wave 2 wiring)
+
+- `WorldGenConfig` — 9 new fields + matching `Default*` constants; all included in `Reset()`, `CountChanges()`, `CountFeatureChanges()`, `CountWorldChanges()` (PyramidsMode in World tab count).
+- `FeatureGenSystem.ModifyWorldGenTasks` — 7 new supplement inserts (Hives, Mushroom, Pyramids boost, Traps, Herbs, Lakes, Shrines); Pyramids disable when `PyramidsMode == -1`.
+- `OreGenSystem.OnSmashAltar` — `combined * AltarPatchMul` in supplemental vein formula.
+- `OreGenSystem.OnDropMeteor` — `OreFrequencyMul * MeteorChanceMul` in extra meteor formula.
+- `UI/WorldConfigUIStateV2` — Features tab gets 7 new sliders + Ore Meta subsection (2 sliders); Shape tab gains Pyramids tri-state row; Presets tab gains 3 bundle buttons with description text.
+- `ConfigPersistence` — 9 new keys persisted across sessions.
+
+### Added (2026-05-20 — 8 new gen features + settings persistence)
+
+- **Pots ×** — `SupplementPots` inserts after vanilla `Pots`/`Pyramids`; calls `WorldGen.PlacePot` with `TileID.Pots`. Density scaled per area.
+- **Hellforges ×** — `SupplementHellforges` inserts after `Hellforge`/`Underworld`; `WorldGen.PlaceTile(TileID.Hellforge)` in underworld layer.
+- **Shadow Orbs / Crimson Hearts ×** — `SupplementShadowOrbs` inserts after `Altars`/`Shadow Orbs`; `WorldGen.PlaceTile(TileID.ShadowOrbs, style: WorldGen.crimson ? 1 : 0)` chooses Heart vs Orb per world.
+- **Living Trees ×** — `SupplementLivingTrees`; `WorldGen.GrowLivingTree` wrapped in try/catch, capped at +10 extras to avoid hangs.
+- **Spider Caves ×** — `SupplementSpiderCaves`; scatters `TileID.Cobweb` clusters in cavern empty space (vanilla nest gen is private — stable approximation).
+- **Jungle Side** — `GenVars.jungleOriginX` overridden in `PreWorldGen` (Left ≈ 25 % width, Right ≈ 75 %); UI mirrors Dungeon Side row.
+- **No Evil Spread** — `ModifyHardmodeTasks` disables vanilla "Hardmode Good" + "Hardmode Evil" passes when set; stops HM corruption/crimson V-cuts.
+- **No Hallow Spread** — disables "Hardmode Good Remix" pass.
+- **Settings persistence** — `Common/ConfigPersistence.cs`. Plain `key=value` file at `<SavePath>/WorldConfigMod_settings.txt`. Loaded in `WorldConfigMod.PostSetupContent`, saved in `Mod.Unload` and on every `CloseConfigMenu()`. Includes all per-ore multipliers (`Ore.<key>=…`).
+- **`WorldGenConfig`** — 10 new fields with defaults: `PotsMul`, `HellforgesMul`, `ShadowOrbsMul`, `LivingTreesMul`, `SpiderCavesMul`, `JungleSide`, `NoEvilSpread`, `NoHallowSpread` + matching `Default*` constants; included in `Reset()`, `CountChanges()`, `CountFeatureChanges()`, `CountWorldChanges()`.
+- **V2 UI rows** — Features tab gets 5 new sliders (Pots / Hellforges / Shadow Orbs / Living Trees / Spider Caves). Shape tab gains Jungle Side button row + "Disable Evil Spread" / "Disable Hallow Spread" toggle rows.
+
+All hooks remain no-ops when `WorldGenConfig.UseCustom == false`; vanilla world gen is untouched.
+
 ### Changed (2026-05-20 — overlay button redesign)
 
 - **World Config overlay button** (`UIInjectSystem.DrawOverlayButton`) — complete visual redesign:

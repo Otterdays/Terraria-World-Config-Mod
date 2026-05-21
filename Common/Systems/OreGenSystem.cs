@@ -101,7 +101,8 @@ public class OreGenSystem : ModSystem
             return;
 
         // Vanilla places one HM tier per altar; add supplemental veins for active world ores.
-        int extraVeins = OreGenMath.ComputeSupplementalCount(12, combined);
+        // AltarPatchMul scales the vanilla patch size (number of supplemental veins per smash).
+        int extraVeins = OreGenMath.ComputeSupplementalCount(12, combined * WorldGenConfig.AltarPatchMul);
         if (extraVeins <= 0)
             return;
 
@@ -146,7 +147,8 @@ public class OreGenSystem : ModSystem
         if (!WorldGenConfig.UseCustom)
             return;
 
-        float mul = OreScatterRunner.GetOreMul("Meteorite") * WorldGenConfig.OreFrequencyMul;
+        // MeteorChanceMul biases meteor event payoff (more meteorite per fall).
+        float mul = OreScatterRunner.GetOreMul("Meteorite") * WorldGenConfig.OreFrequencyMul * WorldGenConfig.MeteorChanceMul;
         int extra = OreGenMath.ComputeSupplementalCount(1, mul);
         if (extra <= 0)
             return;

@@ -44,10 +44,45 @@ Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects in
 
 ## Known gaps
 
-- Settings in-memory only (no persistence).
+- ~~Settings in-memory only (no persistence).~~ **Resolved 2026-05-20** — persisted to `<SavePath>/WorldConfigMod_settings.txt`.
 - Gems, chests, caves, biomes — see [EXPANSIONS.md](EXPANSIONS.md).
 - Custom dimensions below vanilla Small (4200×1200) cause world-gen crashes in vanilla `AddGenPasses` (hardcoded range inversions).
 - Multiplayer config sync not implemented.
+
+## [AMENDED 2026-05-20]: 10 more features — wave 2 + bundles (shipped)
+
+All gated on `WorldGenConfig.UseCustom`. Build: 109,789 bytes.
+
+| Feature | Where | Hook / approach |
+|---------|-------|-----------------|
+| Hives × | Features tab | Insert after `Hives`/`Jungle` → `TileRunner(TileID.Hive)` in jungle band |
+| Mushroom Patches × | Features tab | Insert after `Mushroom Patches` → `TileRunner(TileID.MushroomGrass)` |
+| Pyramids tri-state | Shape tab | Disable pass at -1, supplement sand mound at +1 |
+| Traps × | Features tab | `PlaceTile(TileID.Traps)` style 0-5 in cavern |
+| Herbs × | Features tab | `PlaceTile(TileID.MatureHerbs)` style 0-6 |
+| Lakes × | Features tab | Carve bowl + `Main.tile.LiquidAmount=255 LiquidType=Water` |
+| Shrines × | Features tab | Stone alcove (vanilla shrine carve is private) |
+| Altar Patch × | Features tab (Ore Meta) | Factor into existing `OnSmashAltar` formula |
+| Meteor Chance × | Features tab (Ore Meta) | Factor into existing `OnDropMeteor` formula |
+| **Preset bundles** | Presets tab | `ApplyResourceRichPreset` / `ApplyCaveLabyrinthPreset` / `ApplyMinimalEvilPreset` |
+
+## [AMENDED 2026-05-20]: 8 new gen features + persistence (shipped)
+
+All gated on `WorldGenConfig.UseCustom`. With Custom OFF the mod is fully inert.
+
+| Feature | Where | Hook |
+|---------|-------|------|
+| Pots × | Features tab | Insert after `Pots`/`Pyramids` → `WorldGen.PlacePot` |
+| Hellforges × | Features tab | Insert after `Hellforge`/`Underworld` → `PlaceTile(TileID.Hellforge)` |
+| Shadow Orbs × | Features tab | Insert after `Altars` → `PlaceTile(TileID.ShadowOrbs, style=crimson?1:0)` |
+| Living Trees × | Features tab | Insert after `Living Trees` → `WorldGen.GrowLivingTree` (cap +10) |
+| Spider Caves × | Features tab | Insert after `Spider Caves` → cobweb cluster scatter |
+| Jungle Side | Shape tab | `PreWorldGen` → `GenVars.jungleOriginX` 25 %/75 % |
+| Disable Evil Spread | Shape tab | `ModifyHardmodeTasks` → disable Hardmode Good/Evil |
+| Disable Hallow Spread | Shape tab | `ModifyHardmodeTasks` → disable Hardmode Good Remix |
+| **Settings persistence** | All | `Common/ConfigPersistence.cs` → `<SavePath>/WorldConfigMod_settings.txt`; load in `PostSetupContent`, save in `Unload` + `CloseConfigMenu` |
+
+Build: 103,088 bytes (clean, 0 warnings).
 
 ## [AMENDED 2026-05-20]: Overlay button redesign (shipped)
 

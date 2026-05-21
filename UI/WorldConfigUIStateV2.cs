@@ -400,6 +400,108 @@ public class WorldConfigUIStateV2 : UIState
 
         AddHeading("Dungeon");
         _contentList.Add(MakeDungeonSideRow());
+
+        AddHeading("Jungle");
+        _contentList.Add(MakeJungleSideRow());
+
+        AddHeading("Pyramids");
+        _contentList.Add(MakePyramidsModeRow());
+
+        AddHeading("Hardmode Spread");
+        _contentList.Add(MakeSpreadToggleRow("Disable Evil Spread",
+            () => WorldGenConfig.NoEvilSpread,
+            v => WorldGenConfig.NoEvilSpread = v));
+        _contentList.Add(MakeSpreadToggleRow("Disable Hallow Spread",
+            () => WorldGenConfig.NoHallowSpread,
+            v => WorldGenConfig.NoHallowSpread = v));
+    }
+
+    private UIElement MakeBundleButton(string title, string desc, Color baseCol, Color hovCol, Action onClick)
+    {
+        var w = new UIElement { Width = StyleDimension.Fill, Height = StyleDimension.FromPixels(50f) };
+        var btn = new UITextButton(title, 200f, 30f, () => { onClick(); Refresh(); });
+        btn.BaseColor = baseCol;
+        btn.HoverColor = hovCol;
+        w.Append(btn);
+        var lbl = new UIText(desc, 0.72f)
+        {
+            TextColor = new Color(190, 200, 220),
+            Left = StyleDimension.FromPixels(210f),
+            VAlign = 0.5f,
+        };
+        w.Append(lbl);
+        return w;
+    }
+
+    private void ToastBundle(string msg) =>
+        ToastManager.Push(msg, new Color(160, 220, 180), 3.5);
+
+    private UIElement MakePyramidsModeRow()
+    {
+        float btnW = 80f, btnH = 26f, gap = 4f;
+        var row = new UIElement
+        {
+            Width = StyleDimension.Fill,
+            Height = StyleDimension.FromPixels(btnH),
+        };
+        (string text, int mode)[] opts = { ("Disable", -1), ("Vanilla", 0), ("Boost", 1) };
+        for (int i = 0; i < opts.Length; i++)
+        {
+            int captured = opts[i].mode;
+            var b = new UITextButton(opts[i].text, btnW, btnH, () =>
+            {
+                WorldGenConfig.PyramidsMode = captured;
+                RefreshNavBadges();
+                RebuildContent();
+            });
+            b.Left = StyleDimension.FromPixels(i * (btnW + gap));
+            b.BaseColor = (WorldGenConfig.PyramidsMode == captured) ? new Color(140, 110, 50) : new Color(70, 55, 30);
+            row.Append(b);
+        }
+        return row;
+    }
+
+    private UIElement MakeJungleSideRow()
+    {
+        float btnW = 70f, btnH = 26f, gap = 4f;
+        var row = new UIElement
+        {
+            Width = StyleDimension.Fill,
+            Height = StyleDimension.FromPixels(btnH),
+        };
+        (string text, int side)[] opts = { ("Left", -1), ("Random", 0), ("Right", 1) };
+        for (int i = 0; i < opts.Length; i++)
+        {
+            int captured = opts[i].side;
+            var b = new UITextButton(opts[i].text, btnW, btnH, () =>
+            {
+                WorldGenConfig.JungleSide = captured;
+                RefreshNavBadges();
+            });
+            b.Left = StyleDimension.FromPixels(i * (btnW + gap));
+            b.BaseColor = (WorldGenConfig.JungleSide == captured) ? new Color(60, 110, 60) : new Color(40, 70, 40);
+            row.Append(b);
+        }
+        return row;
+    }
+
+    private UIElement MakeSpreadToggleRow(string label, Func<bool> get, Action<bool> set)
+    {
+        float btnH = 26f;
+        var row = new UIElement
+        {
+            Width = StyleDimension.Fill,
+            Height = StyleDimension.FromPixels(btnH),
+        };
+        var b = new UITextButton(get() ? $"[X] {label}" : $"[  ] {label}", 240f, btnH, () =>
+        {
+            set(!get());
+            RefreshNavBadges();
+            RebuildContent();
+        });
+        b.BaseColor = get() ? new Color(110, 50, 50) : new Color(40, 50, 80);
+        row.Append(b);
+        return row;
     }
 
     private void BuildFeaturesTab()
@@ -410,6 +512,31 @@ public class WorldConfigUIStateV2 : UIState
         AddFeature("Chests",          v => WorldGenConfig.ChestsMul = v,          () => WorldGenConfig.ChestsMul,          WorldGenConfig.DefaultChestsMul);
         AddFeature("Floating Islands",v => WorldGenConfig.FloatingIslandsMul = v, () => WorldGenConfig.FloatingIslandsMul, WorldGenConfig.DefaultFloatingIslandsMul);
         AddFeature("Marble/Granite",  v => WorldGenConfig.MarbleGraniteMul = v,   () => WorldGenConfig.MarbleGraniteMul,   WorldGenConfig.DefaultMarbleGraniteMul);
+        AddFeature("Pots",            v => WorldGenConfig.PotsMul = v,            () => WorldGenConfig.PotsMul,            WorldGenConfig.DefaultPotsMul);
+        AddFeature("Hellforges",      v => WorldGenConfig.HellforgesMul = v,      () => WorldGenConfig.HellforgesMul,      WorldGenConfig.DefaultHellforgesMul);
+        AddFeature("Shadow Orbs",     v => WorldGenConfig.ShadowOrbsMul = v,      () => WorldGenConfig.ShadowOrbsMul,      WorldGenConfig.DefaultShadowOrbsMul);
+        AddFeature("Living Trees",    v => WorldGenConfig.LivingTreesMul = v,     () => WorldGenConfig.LivingTreesMul,     WorldGenConfig.DefaultLivingTreesMul);
+        AddFeature("Spider Caves",    v => WorldGenConfig.SpiderCavesMul = v,     () => WorldGenConfig.SpiderCavesMul,     WorldGenConfig.DefaultSpiderCavesMul);
+        AddFeature("Hives",           v => WorldGenConfig.HivesMul = v,           () => WorldGenConfig.HivesMul,           WorldGenConfig.DefaultHivesMul);
+        AddFeature("Mushroom Patches",v => WorldGenConfig.MushroomMul = v,        () => WorldGenConfig.MushroomMul,        WorldGenConfig.DefaultMushroomMul);
+        AddFeature("Traps",           v => WorldGenConfig.TrapsMul = v,           () => WorldGenConfig.TrapsMul,           WorldGenConfig.DefaultTrapsMul);
+        AddFeature("Herbs",           v => WorldGenConfig.HerbsMul = v,           () => WorldGenConfig.HerbsMul,           WorldGenConfig.DefaultHerbsMul);
+        AddFeature("Lakes",           v => WorldGenConfig.LakesMul = v,           () => WorldGenConfig.LakesMul,           WorldGenConfig.DefaultLakesMul);
+        AddFeature("Shrines",         v => WorldGenConfig.ShrinesMul = v,         () => WorldGenConfig.ShrinesMul,         WorldGenConfig.DefaultShrinesMul);
+
+        AddHeading("Ore Meta");
+        _contentList.Add(new UICompactSliderRow("Altar Patch", 0.25f, 5f,
+            WorldGenConfig.AltarPatchMul, 0.05f,
+            formatter: v => $"×{v:0.00}",
+            onChanged: v => { WorldGenConfig.AltarPatchMul = v; RefreshSummary(); RefreshNavBadges(); },
+            defaultValue: WorldGenConfig.DefaultAltarPatchMul,
+            showVanillaBadge: true, labelWidth: 115, valueWidth: 56, badgeWidth: 48));
+        _contentList.Add(new UICompactSliderRow("Meteor Chance", 0.0f, 5f,
+            WorldGenConfig.MeteorChanceMul, 0.05f,
+            formatter: v => $"×{v:0.00}",
+            onChanged: v => { WorldGenConfig.MeteorChanceMul = v; RefreshSummary(); RefreshNavBadges(); },
+            defaultValue: WorldGenConfig.DefaultMeteorChanceMul,
+            showVanillaBadge: true, labelWidth: 115, valueWidth: 56, badgeWidth: 48));
     }
 
     private void AddFeature(string label, Action<float> setter, Func<float> getter, float def)
@@ -489,6 +616,21 @@ public class WorldConfigUIStateV2 : UIState
     {
         AddHeading("Size Presets");
         _contentList.Add(MakePresetButtonRow());
+
+        AddHeading("Bundle Presets");
+        _contentList.Add(MakeInfoLine("One-click apply across many sliders. Forces Custom: ON."));
+        _contentList.Add(MakeBundleButton("Resource-Rich",
+            "Higher ore freq + gems + chests + crystals + pots + herbs.",
+            new Color(40, 110, 60), new Color(70, 160, 90),
+            () => { WorldGenConfig.ApplyResourceRichPreset(); ToastBundle("Resource-Rich applied"); }));
+        _contentList.Add(MakeBundleButton("Cave Labyrinth",
+            "Deeper caves + spider nests + traps + marble/granite + mushroom + lakes.",
+            new Color(60, 70, 130), new Color(90, 110, 180),
+            () => { WorldGenConfig.ApplyCaveLabyrinthPreset(); ToastBundle("Cave Labyrinth applied"); }));
+        _contentList.Add(MakeBundleButton("Minimal Evil",
+            "Disable HM corruption/crimson + hallow spread; smaller altar patches.",
+            new Color(120, 50, 50), new Color(180, 80, 80),
+            () => { WorldGenConfig.ApplyMinimalEvilPreset(); ToastBundle("Minimal Evil applied"); }));
 
         AddHeading("Debug Preset");
         _contentList.Add(MakeInfoLine("Tiny + 20× ore — fast iteration. Forces Custom: ON."));

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="World Config — tModLoader mod for custom Terraria world size, ore veins, caves, dungeons, and 30+ generation sliders." />
+  <title>World Config — Terraria tModLoader Mod</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" data-route="home">
+        <span class="brand-mark" aria-hidden="true">⚙</span>
+        <span class="brand-text">World Config</span>
+      </a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
+      <nav class="site-nav" id="siteNav" aria-label="Primary">
+        <a href="#home" data-route="home" class="active">Home</a>
+        <a href="#start" data-route="start">Quick Start</a>
+        <a href="#features" data-route="features">Features</a>
+        <a href="#settings" data-route="settings">Settings</a>
+        <a href="#ores" data-route="ores">Ores</a>
+        <a href="#install" data-route="install">Install</a>
+        <a href="#advanced" data-route="advanced">Advanced</a>
+        <a href="#contrib" data-route="contrib">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="site-main">
+    <!-- HOME -->
+    <section id="page-home" class="page active" data-page="home">
+      <div class="hero">
+        <img class="hero-banner" src="assets/banner.svg" width="1200" height="630" alt="World Config mod promotional banner" />
+        <div class="hero-copy">
+          <p class="eyebrow">tModLoader 1.4.4+ · Terraria 1.4.4 · .NET 8</p>
+          <h1>Resize worlds. Tune every ore. Shape generation <em>before</em> you hit Create.</h1>
+          <p class="lead">A New World screen overlay with 30+ sliders, preset bundles, and a live summary — vanilla world gen stays intact; the mod replaces or supplements the passes that matter.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#start" data-route="start">5-minute quick start</a>
+            <a class="btn btn-ghost" href="https://github.com" id="repoLink" rel="noopener">View on GitHub</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong>21</strong> wiki ores catalogued</li>
+            <li><strong>19</strong> per-ore multipliers</li>
+            <li><strong>23</strong> unit tests passing</li>
+            <li><strong>Settings saved</strong> between sessions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-grid three">
+        <article class="card">
+          <h2>Beginner?</h2>
+          <p>Turn custom gen ON, pick Large preset, bump Copper to ×2, create world. Done.</p>
+          <a href="#start" data-route="start">Step-by-step →</a>
+        </article>
+        <article class="card">
+          <h2>Power user?</h2>
+          <p>Hook map, ore phases, supplement passes, and persistence file format — all documented.</p>
+          <a href="#advanced" data-route="advanced">Architecture →</a>
+        </article>
+        <article class="card">
+          <h2>Modder?</h2>
+          <p>Clone, <code>test.bat</code>, <code>build.bat</code>, read <code>AGENTS.md</code> before touching menu UI.</p>
+          <a href="#contrib" data-route="contrib">Contributor guide →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- QUICK START -->
+    <section id="page-start" class="page" data-page="start">
+      <header class="page-head">
+        <h1>Quick Start</h1>
+        <p class="subtitle">Idiot-proof path from zero to a custom world in under five minutes.</p>
+      </header>
+      <ol class="steps">
+        <li>
+          <h3>Install tModLoader &amp; build the mod</h3>
+          <p>Steam → tModLoader 1.4.4+. Close the game. Run <code>build.bat</code> in the repo. Enable <strong>WorldConfigMod</strong> → Reload.</p>
+        </li>
+        <li>
+          <h3>Open the right screen</h3>
+          <p>Main menu → <strong>Single Player → New</strong> (world creation). You should see a wide <strong>World Config</strong> button at the bottom — green accent when custom gen is ON.</p>
+        </li>
+        <li>
+          <h3>Flip the master switch</h3>
+          <p>Inside the panel, turn <strong>Use Custom Generation</strong> <span class="pill on">ON</span>. If this stays OFF, Terraria is 100% vanilla — no exceptions.</p>
+        </li>
+        <li>
+          <h3>Pick a preset (optional)</h3>
+          <p><strong>Presets</strong> tab → size chips S–XXL, or bundles like <em>Resource Rich</em> / <em>Cave Labyrinth</em>. Summary strip shows live size + change count.</p>
+        </li>
+        <li>
+          <h3>Tweak one thing you care about</h3>
+          <p>Examples: <strong>World</strong> width 8400 · <strong>Ores</strong> Hellstone ×3 · <strong>Features</strong> Floating Islands ×2 · <strong>Shape</strong> dungeon forced left.</p>
+        </li>
+        <li>
+          <h3>Apply &amp; create</h3>
+          <p><strong>Apply &amp; Back</strong> → vanilla <strong>Create</strong>. Settings auto-save to your tModLoader save folder.</p>
+        </li>
+      </ol>
+      <aside class="callout warn">
+        <strong>Minimum safe size:</strong> 4200×1200 (vanilla Small). Smaller dimensions crash vanilla <code>AddGenPasses</code> (hardcoded random ranges invert).
+      </aside>
+      <aside class="callout tip">
+        <strong>Fast test:</strong> Footer <strong>DEBUG: Tiny + 20× Ore</strong> — minimum map with extreme ore for quick iteration.
+      </aside>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="page-features" class="page" data-page="features">
+      <header class="page-head">
+        <h1>Features</h1>
+        <p class="subtitle">Everything gated on <code>UseCustom</code>. OFF = vanilla only.</p>
+      </header>
+      <div id="featureTables"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="page-settings" class="page" data-page="settings">
+      <header class="page-head">
+        <h1>Settings Reference</h1>
+        <p class="subtitle">Ranges and defaults from <code>WorldGenConfig.cs</code>.</p>
+      </header>
+      <div id="settingsTables"></div>
+      <aside class="callout">
+        <strong>Persistence:</strong> <code>&lt;SavePath&gt;/WorldConfigMod_settings.txt</code> — loaded on mod setup, saved on panel close and mod unload.
+      </aside>
+    </section>
+
+    <!-- ORES -->
+    <section id="page-ores" class="page" data-page="ores">
+      <header class="page-head">
+        <h1>Ore Catalog</h1>
+        <p class="subtitle">21 types from the <a href="https://terraria.wiki.gg/wiki/Ores" rel="noopener">Terraria wiki</a>. 19 have sliders; 2 are info-only.</p>
+      </header>
+      <label class="search-row">
+        <span>Filter ores</span>
+        <input type="search" id="oreFilter" placeholder="e.g. chlorophyte, evil…" autocomplete="off" />
+      </label>
+      <div id="oreCatalog"></div>
+    </section>
+
+    <!-- INSTALL -->
+    <section id="page-install" class="page" data-page="install">
+      <header class="page-head">
+        <h1>Install &amp; Build</h1>
+        <p class="subtitle">Windows-first script; manual path for other OS.</p>
+      </header>
+      <div class="card-grid two">
+        <article class="card">
+          <h2>Windows — <code>build.bat</code></h2>
+          <pre class="code-block"><code>build.bat</code></pre>
+          <p>Output: <code>%USERPROFILE%\Documents\My Games\Terraria\tModLoader\Mods\WorldConfigMod.tmod</code></p>
+          <table class="data-table compact">
+            <thead><tr><th>Exit</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>Success</td></tr>
+              <tr><td>1</td><td>tModLoader not found</td></tr>
+              <tr><td>2</td><td>Game still running</td></tr>
+              <tr><td>3</td><td>Robocopy failed</td></tr>
+              <tr><td>4</td><td>Build failed</td></tr>
+              <tr><td>5</td><td>.tmod missing</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="card">
+          <h2>Tests — <code>test.bat</code></h2>
+          <pre class="code-block"><code>test.bat</code></pre>
+          <p>23 xUnit tests on <code>Core/</code> (no Terraria runtime).</p>
+          <h3>Env overrides</h3>
+          <ul class="plain-list">
+            <li><code>TML_DIR</code> — install with <code>tModLoader.dll</code></li>
+            <li><code>TML_DATA_DIR</code> — ModSources / Mods root</li>
+            <li><code>MOD_NAME</code> — default WorldConfigMod</li>
+            <li><code>BUILD_CONFIG</code> — Release | Debug</li>
+          </ul>
+        </article>
+      </div>
+      <h2>Troubleshooting</h2>
+      <div id="troubleshootTable"></div>
+    </section>
+
+    <!-- ADVANCED -->
+    <section id="page-advanced" class="page" data-page="advanced">
+      <header class="page-head">
+        <h1>Advanced</h1>
+        <p class="subtitle">Hooks, data flow, and foot-guns for experienced modders.</p>
+      </header>
+      <div class="card">
+        <h2>Generation pipeline</h2>
+        <pre class="diagram" aria-label="World gen hook flow">clearWorld → WorldSizeSystem (dimensions)
+PreWorldGen → FeatureGenSystem (cave depth, jungle side, dungeon)
+ModifyWorldGenTasks → replace Shinies (ores) + feature supplement passes
+After Underworld → hellstone pass
+ModifyHardmodeTasks → chlorophyte + spread toggles
+SmashAltar / dropMeteor → HM altar ores + meteor supplement</pre>
+      </div>
+      <div class="card">
+        <h2>Menu UI — do not break</h2>
+        <ul class="plain-list">
+          <li>Config uses <code>Main.MenuUI.SetState</code> — never hijack <code>menuMode</code> alone (black screen).</li>
+          <li>Overlay/toasts: <code>DrawMenu</code> + <code>Matrix.Identity</code> + framebuffer viewport coords.</li>
+          <li>Cursor: redraw after HUD via <code>RedrawMenuCursor()</code>.</li>
+          <li>Panel: <code>UserInterface</code> in layout space — do not nest inside menu <code>SpriteBatch.Begin</code>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Repo map (mod code only)</h2>
+        <pre class="code-block"><code>Core/           OreCatalog, OreGenMath, OreConfigHelper
+Common/         WorldGenConfig, ConfigPersistence, Systems/, Ore/
+UI/             WorldConfigUIStateV2 (default), V1, Elements/
+WorldConfigMod.Tests/   23 unit tests</code></pre>
+      </div>
+      <p>Full diagrams: <a href="DOCS/ARCHITECTURE.md">DOCS/ARCHITECTURE.md</a> (dev repo; not on this site mirror).</p>
+    </section>
+
+    <!-- CONTRIBUTE -->
+    <section id="page-contrib" class="page" data-page="contrib">
+      <header class="page-head">
+        <h1>Contribute</h1>
+        <p class="subtitle">How agents and humans should work in this repo.</p>
+      </header>
+      <div class="card">
+        <h2>Read order</h2>
+        <ol>
+          <li><code>AGENTS.md</code> — rules for AI + humans</li>
+          <li><code>DOCS/SUMMARY.md</code> — live status</li>
+          <li><code>DOCS/MODDING_GUIDE.md</code> — edit recipes</li>
+          <li><code>DOCS/ARCHITECTURE.md</code> — hooks</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Doc hygiene (every meaningful PR)</h2>
+        <ul class="plain-list">
+          <li>Append to <code>DOCS/CHANGELOG.md</code> and <code>DOCS/SUMMARY.md</code> — never delete doc history.</li>
+          <li>Update <code>AGENTS.md</code> when layout, hooks, or agent workflow changes.</li>
+          <li>Sync this website (<code>index.html</code> / <code>app.js</code> data) when user-facing features ship.</li>
+          <li><code>build.bat</code> excludes <code>DOCS/</code>, tests, web root files — do not remove exclusions.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Known gaps</h2>
+        <ul class="plain-list">
+          <li>Multiplayer config sync — not implemented</li>
+          <li>Some EXPANSIONS.md items — roadmap only</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>World Config Mod · Community tooling · Terraria &amp; tModLoader are trademarks of their respective owners.</p>
+    <p><a href="README.md">README</a> · <a href="DOCS/SUMMARY.md">Developer summary</a> · <a href="#home" data-route="home">Top</a></p>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -290,6 +290,7 @@ public class UIInjectSystem : ModSystem
 
     public static void CloseConfigMenu()
     {
+        ConfigPersistence.Save();
         if (_returnMenuState != null && Main.MenuUI != null)
             Main.MenuUI.SetState(_returnMenuState);
         else
