@@ -6,6 +6,23 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added (2026-05-20 — test-suite audit + GUI runner)
+
+- **`WorldGenConfigTests`** — covers reset/default restoration, size preset mapping, unknown preset no-op, UI diff counters, preset bundles, and debug preset behavior.
+- **`Test.gui.bat`** — Windows pause-on-finish runner that lists discovered tests, runs the full suite with detailed console output, then shows pass/fail state.
+- **`WorldConfigMod.Tests.csproj`** — links pure `Common/WorldGenConfig.cs` alongside `Core/**` so config behavior stays under unit test without pulling Terraria-dependent systems.
+
+### Changed (2026-05-20 — test tooling hygiene)
+
+- **`build.bat`** — excludes `test.bat` and `Test.gui.bat` from the ModSources mirror so dev-only scripts do not ship into the `.tmod` source tree.
+- Verified `test.bat` and `Test.gui.bat`: **59/59** tests passing.
+
+### Changed (2026-05-20 — documentation sync)
+
+- **`DOCS/ARCHITECTURE.md`**, **`MODDING_GUIDE.md`**, **`VERSIONS.md`**, **`WEBSITE.md`**, **`STYLE_GUIDE.md`** — **59** tests, `Test.gui.bat`, `WorldGenConfig` test link, build mirror exclusions.
+- **`index.html`** — hero stats, Install tests card, Advanced repo map, Contribute hygiene.
+- **`test.bat`** — comment points to `Test.gui.bat` for full discovery + detailed run.
+
 ### Added (2026-05-20 — Terraria 1.4.4.9 / tML 2026.3.3.0 + vanilla-mimic tests)
 
 - **`Core/TerrariaVanillaSpecs.cs`** — pinned game/tML versions, world presets S–XXL, copper frequency, feature `2 + width/4200` scaling.

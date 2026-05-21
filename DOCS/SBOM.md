@@ -2,7 +2,7 @@
 
 # SBOM — Software Bill of Materials
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-05-20 (test-suite audit; no dependency changes)
 
 ## Runtime (provided by tModLoader / Terraria)
 
@@ -29,6 +29,10 @@ See [`VERSIONS.md`](VERSIONS.md) for the full pin list.
 | Microsoft.NET.Test.Sdk | 17.11.1 | xUnit runner |
 | xunit | 2.9.2 | Unit tests |
 | xunit.runner.visualstudio | 2.8.2 | IDE / `dotnet test` |
+
+## [AMENDED 2026-05-20]: Test-suite audit
+
+No package changes. `WorldGenConfigTests` reuse existing xUnit dependencies. `Test.gui.bat` is a Windows batch wrapper around `dotnet test`; no new tooling dependency.
 
 ## Project dependencies (mod)
 

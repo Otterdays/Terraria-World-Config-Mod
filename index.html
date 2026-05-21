@@ -46,7 +46,7 @@
           <ul class="hero-stats">
             <li><strong>21</strong> wiki ores catalogued</li>
             <li><strong>19</strong> per-ore multipliers</li>
-            <li><strong>51</strong> unit tests (Terraria-sized worlds)</li>
+            <li><strong>59</strong> unit tests (Core + config presets)</li>
             <li><strong>Settings saved</strong> between sessions</li>
           </ul>
         </div>
@@ -64,7 +64,7 @@
         </article>
         <article class="card">
           <h2>Modder?</h2>
-          <p>Clone, <code>test.bat</code>, <code>build.bat</code>, read <code>AGENTS.md</code> before touching menu UI.</p>
+          <p>Clone, <code>test.bat</code> or <code>Test.gui.bat</code>, <code>build.bat</code>, read <code>AGENTS.md</code> before touching menu UI.</p>
           <a href="#contrib" data-route="contrib">Contributor guide →</a>
         </article>
       </div>
@@ -168,9 +168,10 @@
           </table>
         </article>
         <article class="card">
-          <h2>Tests — <code>test.bat</code></h2>
-          <pre class="code-block"><code>test.bat</code></pre>
-          <p>xUnit on <code>Core/</code> — vanilla world sizes, copper vein counts, feature scaling (no game runtime).</p>
+          <h2>Tests</h2>
+          <pre class="code-block"><code>test.bat
+Test.gui.bat</code></pre>
+          <p><strong>59</strong> xUnit cases on <code>Core/</code> + <code>WorldGenConfig</code> — ore catalog, vanilla world sizes, vein math, reset/preset/diff counters, bundle presets. <code>Test.gui.bat</code> lists every test, runs detailed console output, then pauses. No game runtime required.</p>
           <h3>Env overrides</h3>
           <ul class="plain-list">
             <li><code>TML_DIR</code> — install with <code>tModLoader.dll</code></li>
@@ -213,7 +214,7 @@ SmashAltar / dropMeteor → HM altar ores + meteor supplement</pre>
         <pre class="code-block"><code>Core/           OreCatalog, OreGenMath, OreConfigHelper
 Common/         WorldGenConfig, ConfigPersistence, Systems/, Ore/
 UI/             WorldConfigUIStateV2 (default), V1, Elements/
-WorldConfigMod.Tests/   23 unit tests</code></pre>
+WorldConfigMod.Tests/   59 unit tests (Core + WorldGenConfig)</code></pre>
       </div>
       <p>Full diagrams: <a href="DOCS/ARCHITECTURE.md">DOCS/ARCHITECTURE.md</a> (dev repo; not on this site mirror).</p>
     </section>
@@ -239,7 +240,7 @@ WorldConfigMod.Tests/   23 unit tests</code></pre>
           <li>Append to <code>DOCS/CHANGELOG.md</code> and <code>DOCS/SUMMARY.md</code> — never delete doc history.</li>
           <li>Update <code>AGENTS.md</code> when layout, hooks, or agent workflow changes.</li>
           <li>Sync this website (<code>index.html</code> / <code>app.js</code> data) when user-facing features ship.</li>
-          <li><code>build.bat</code> excludes <code>DOCS/</code>, tests, web root files — do not remove exclusions.</li>
+          <li><code>build.bat</code> excludes <code>DOCS/</code>, tests, <code>test.bat</code>, <code>Test.gui.bat</code>, web root files — do not remove exclusions.</li>
         </ul>
       </div>
       <div class="card">

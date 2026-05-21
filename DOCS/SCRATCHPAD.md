@@ -4,27 +4,39 @@
 
 ## Active tasks
 
+- [x] Test-suite audit — `WorldGenConfigTests`, 59/59 passing
+- [x] `Test.gui.bat` — discovery + detailed full-suite runner, pause-on-finish
+- [x] Build mirror hygiene — `test.bat` + `Test.gui.bat` excluded from ModSources
 - [x] Menu HUD coords — framebuffer `Viewport` + `Identity` in `DrawMenu` (verified 2026-05-20)
 - [x] Cursor behind World Config button — `RedrawMenuCursor()` after overlay (verified 2026-05-20)
 - [x] GitHub Pages site — `index.html` / `styles.css` / `app.js` + workflow + `DOCS/WEBSITE.md`
 - [x] `assets/banner.svg` v3 — expanded hero; root `banner.svg` removed
 - [x] `AGENTS.md` — Pages, layout, doc checklist, persistence
-- [x] Terraria **1.4.4.9** / tML **2026.3.3.0** — `TerrariaVanillaSpecs`, **51/51** tests
+- [x] Terraria **1.4.4.9** / tML **2026.3.3.0** — `TerrariaVanillaSpecs`, **59/59** tests
 - [ ] Enable GitHub Pages in repo Settings (manual, user)
 - [ ] Verify config panel clicks / scroll on full config panel (manual)
 - [ ] `build.bat` when tML closed (last run: tests OK, build blocked — game open)
 
 ## Last 5 actions (2026-05-20)
 
-1. **Terraria 1.4.4.9 / tML 2026.3.3.0** — `TerrariaVanillaSpecs`, expanded tests, VERSIONS.md, SBOM, WorldGenConfig presets.
-2. **Project audit + web** — SPA docs site, banner → `assets/`, build exclusions, README persistence fix.
-2. **`banner.svg` v2** — V2 panel mock, world layers, nebula/starfield, 8 faceted gems, feature pills, vignette.
-2. **Docs audit** — GitHub README + `banner.svg`; fixed stale 1750×600 / V1-only README; ARCHITECTURE + AGENTS + MODDING_GUIDE amendments; 23/23 tests.
-2. Fixed cursor Z-order — `RedrawMenuCursor()` with closed batch + `UIScaleMatrix` for `DrawCursor`.
+1. **Doc sync** — 59 tests + `Test.gui.bat` across ARCHITECTURE, MODDING_GUIDE, VERSIONS, WEBSITE, STYLE_GUIDE, index.html, CHANGELOG, SUMMARY.
+1. **Test-suite audit** — linked pure `WorldGenConfig`, added reset/preset/diff/debug tests; `test.bat` 59/59.
+2. **`Test.gui.bat`** — lists tests, runs detailed console output, pauses; smoke verified 59/59.
+3. **Build mirror hygiene** — `build.bat` excludes `test.bat` and `Test.gui.bat` from ModSources.
+4. **Docs sync** — README, SUMMARY, CHANGELOG, STYLE_GUIDE, AGENTS updated for tests/tooling.
+5. **Terraria 1.4.4.9 / tML 2026.3.3.0** — `TerrariaVanillaSpecs`, expanded tests, VERSIONS.md, SBOM, WorldGenConfig presets.
 2. Menu HUD uses `GraphicsDevice.Viewport` (not `Main.screenWidth`) for toasts + overlay button.
 3. Removed temp `DrawMenuDebug` line after user verification.
 4. Docs sync: SUMMARY, CHANGELOG, AGENTS, README, ARCHITECTURE.
 5. `test.bat` — 23/23 pass.
+
+## [AMENDED 2026-05-20]: Test-suite audit + GUI runner
+
+- Added `WorldGenConfigTests` for pure config behavior: reset, preset size mapping, unknown preset no-op, change counters, bundle presets, debug preset.
+- Test project now links `Common/WorldGenConfig.cs` only; no Terraria-dependent systems pulled into unit tests.
+- Added `Test.gui.bat` for human-visible full-suite demo: discovery list, detailed run, green/red console, pause.
+- Fixed `build.bat` mirror exclusions so `test.bat` and `Test.gui.bat` stay dev-only.
+- Verified: `test.bat` 59/59; `Test.gui.bat` 59/59.
 
 ## [AMENDED 2026-05-20]: Cursor Z-order on New World overlay
 

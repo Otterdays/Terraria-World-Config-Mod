@@ -16,3 +16,7 @@ Canonical constants for tests and `WorldGenConfig` presets: `Core/TerrariaVanill
 ## [AMENDED 2026-05-20]:
 
 Pinned Terraria **1.4.4.9** and tModLoader **2026.3.3.0** across SBOM, AGENTS, README, site, and Terraria-mimicking unit tests.
+
+## [AMENDED 2026-05-20]: Test suite count
+
+**59** xUnit cases (`test.bat` / `Test.gui.bat`, Release): `Core/**`, `WorldGenConfigTests` (linked `Common/WorldGenConfig.cs` only). Gameplay still manual in tModLoader.

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WorldConfigMod.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4eb96385c9e044cbcdeda986dcf50767299876f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbebea9e722cb23c807729e5614901bfb5cdb444")]
 [assembly: System.Reflection.AssemblyProductAttribute("WorldConfigMod.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WorldConfigMod.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

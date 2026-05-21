@@ -19,7 +19,7 @@
 ```
 You edit .cs files in this folder
         ↓
-   test.bat  (optional — unit tests, no game needed)
+   test.bat  or  Test.gui.bat  (optional — 59 unit tests, no game needed)
         ↓
    build.bat  (close tModLoader first)
         ↓
@@ -41,6 +41,7 @@ Settings live in **`WorldGenConfig.cs`**. Ore definitions live in **`Core/OreCat
    test.bat
    build.bat
    ```
+   For a visible full-suite run (lists every test, detailed pass output, pause): `Test.gui.bat`  
    Or from PowerShell: `cmd /c test.bat` then `cmd /c build.bat`
 4. You should see `BUILD OK` and a path ending in `WorldConfigMod.tmod`.
 5. Open tModLoader → **Workshop → Mods** → enable **WorldConfigMod** → **Reload**.
@@ -67,9 +68,10 @@ If build says **tModLoader is running** — close the game completely and retry.
 | `UI/Elements/UISliderRow.cs` | One slider row. |
 | `UI/Elements/UITextButton.cs` | One button. |
 | `UI/Elements/UIScrollColumn.cs` | Scrollable ore list + wheel forwarding. |
-| `WorldConfigMod.Tests/` | Unit tests (links `Core/` — not shipped in `.tmod`). |
-| `test.bat` | Runs unit tests. |
-| `build.bat` | Builds `.tmod` (excludes `DOCS/`, `Tests/`). |
+| `WorldConfigMod.Tests/` | Unit tests (links `Core/` + pure `WorldGenConfig.cs` — not shipped in `.tmod`). |
+| `test.bat` | Runs 59 unit tests (Release, minimal output). |
+| `Test.gui.bat` | Same suite — discovery list + detailed console + pause. |
+| `build.bat` | Builds `.tmod` (excludes `DOCS/`, `Tests/`, `test.bat`, `Test.gui.bat`). |
 | `DOCS/EXPANSIONS.md` | Roadmap for gems, caves, biomes, etc. |
 | `AGENTS.md` | Instructions for AI coding agents. |
 
@@ -80,7 +82,7 @@ If build says **tModLoader is running** — close the game completely and retry.
 ## Dev loop (do this every time you change code)
 
 1. **Edit** a `.cs` file and save.
-2. Run **`test.bat`** if you touched `Core/` or tests.
+2. Run **`test.bat`** (or **`Test.gui.bat`** to review output) if you touched `Core/`, `WorldGenConfig`, or tests.
 3. **Close** tModLoader (if open).
 4. Run **`build.bat`** — wait for `BUILD OK`.
 5. **Launch** tModLoader → **Reload Mods**.
@@ -167,7 +169,7 @@ _leftList.Add(new UISliderRow("Jungle Size", 0.5f, 3f,
 2. If world-gen controlled: add spec in `Common/Ore/OreScatterSpecs.cs` and wire hook in `OreGenSystem.cs` (match phase: Shinies, Underworld, HardmodeAltar, etc.).
 3. UI auto-lists `OreCatalog.WithMultipliers` — no UI change for standard ores.
 4. Add/adjust tests in `WorldConfigMod.Tests/OreCatalogTests.cs`.
-5. Run `test.bat` then `build.bat`.
+5. Run `test.bat` (or `Test.gui.bat`) then `build.bat`.
 
 ---
 
@@ -324,3 +326,9 @@ Recipe 5 updated for `Core/OreCatalog`. Added `test.bat` to dev loop. Documented
 ## [AMENDED 2026-05-19]: UI input + scroll + layout
 
 Documented `UpdateConfigInterface`, `UIScrollColumn`, two-column layout, title bar spacing. Added Recipe 6 (scroll lists) and Recipe 8 (expansions). Linked `AGENTS.md` and `EXPANSIONS.md`.
+
+## [AMENDED 2026-05-20]: Test-suite audit + GUI runner
+
+- **59** xUnit tests — `WorldGenConfigTests` for reset, presets, diff counters, bundle presets, debug preset.
+- Test project links `Core/**` and pure `Common/WorldGenConfig.cs` (no Terraria systems).
+- `Test.gui.bat` added for human-visible full-suite runs; `build.bat` excludes dev test scripts from ModSources mirror.

@@ -2,7 +2,7 @@
 
 Instructions for AI coding agents (Cursor, Claude Code, etc.) working in this repo.
 
-**Last agent run:** 2026-05-20 — Terraria **1.4.4.9** / tML **2026.3.3.0** pin, `TerrariaVanillaSpecs` + expanded tests. **Update this file every session** when layout, workflows, or agent rules change.
+**Last agent run:** 2026-05-20 — config preset/diff tests, `Test.gui.bat`, test-script build exclusions. **Update this file every session** when layout, workflows, or agent rules change.
 
 ## Project
 
@@ -12,7 +12,7 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working in this re
 |------|--------|
 | Target | tModLoader **2026.3.3.0** (Terraria **1.4.4.9**), `net8.0` |
 | Build | `build.bat` (close tModLoader first) |
-| Tests | `test.bat` or `dotnet test WorldConfigMod.Tests` |
+| Tests | `test.bat`, `Test.gui.bat`, or `dotnet test WorldConfigMod.Tests` |
 | Mod output | `%USERPROFILE%\Documents\My Games\Terraria\tModLoader\Mods\WorldConfigMod.tmod` |
 | Public site | `index.html` + `styles.css` + `app.js` → GitHub Pages (see below) |
 | Banner | `assets/banner.svg` (1200×630; not shipped in `.tmod`) |
@@ -59,9 +59,10 @@ UI/
   WorldConfigUIState.cs          — legacy two-column panel
   Elements/                      — UISliderRow, UICompactSliderRow, UITextInput, UIScrollColumn, …
 
-WorldConfigMod.Tests/            — xUnit; links Core/ sources; excluded from .tmod build
+WorldConfigMod.Tests/            — xUnit; links Core/ + WorldGenConfig; excluded from .tmod build
 DOCS/                            — dev docs only
 build.txt, description.txt       — tModLoader workshop metadata (keep at repo root)
+Test.gui.bat                     — pause-on-finish test showcase; excluded from .tmod mirror
 ```
 
 ## GitHub Pages (public site)
@@ -140,10 +141,11 @@ Ore keys come from `Core/OreCatalog.cs`. UI lists `OreCatalog.WithMultipliers` (
 
 ```bat
 test.bat          # unit tests — Core catalog, Terraria vanilla specs, ore math, config keys
+Test.gui.bat      # visible full-suite runner — lists tests, detailed pass output, pauses
 build.bat         # full .tmod — requires tModLoader closed
 ```
 
-Add tests in `WorldConfigMod.Tests/` for any new **Core/** logic. Use `TerrariaVanillaSpecs` for world sizes / vanilla formulas — keep in sync with `OreScatterSpecs` and `FeatureGenSystem`. Gameplay is manual in tModLoader.
+Add tests in `WorldConfigMod.Tests/` for any new **Core/** logic and pure config behavior in `WorldGenConfig`. Use `TerrariaVanillaSpecs` for world sizes / vanilla formulas — keep in sync with `OreScatterSpecs` and `FeatureGenSystem`. Gameplay is manual in tModLoader.
 
 ## Code standards (short)
 

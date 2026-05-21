@@ -22,7 +22,7 @@
   <img src="https://img.shields.io/badge/Terraria-1.4.4.9-5a73b4?style=flat-square" alt="Terraria 1.4.4.9" />
   <img src="https://img.shields.io/badge/tModLoader-2026.3.3.0-f0a23a?style=flat-square" alt="tModLoader 2026.3.3.0" />
   <img src="https://img.shields.io/badge/.NET-net8.0-512bd4?style=flat-square" alt=".NET 8" />
-  <img src="https://img.shields.io/badge/tests-passing-7ad36a?style=flat-square" alt="unit tests passing" />
+  <img src="https://img.shields.io/badge/tests-59%20passing-7ad36a?style=flat-square" alt="59 unit tests passing" />
   <img src="https://img.shields.io/badge/version-0.1-9cb4ff?style=flat-square" alt="v0.1" />
 </p>
 
@@ -84,7 +84,7 @@ Copy the project to `ModSources\WorldConfigMod\` (name must match `AssemblyName`
 dotnet build "%USERPROFILE%\Documents\My Games\Terraria\tModLoader\ModSources\WorldConfigMod\WorldConfigMod.csproj" -c Release
 ```
 
-Unit tests (no game required): `test.bat` or `dotnet test WorldConfigMod.Tests`
+Unit tests (no game required): `test.bat`, `Test.gui.bat`, or `dotnet test WorldConfigMod.Tests`
 
 ---
 
@@ -143,9 +143,10 @@ UI/
   WorldConfigUIStateV2   Sidebar panel (default)
   WorldConfigUIState     Legacy two-column panel
   Elements/              Sliders, scroll, compact rows, text input
-WorldConfigMod.Tests/    xUnit — Terraria 1.4.4.9 world sizes, ore math, catalog
+WorldConfigMod.Tests/    xUnit — config presets, Terraria 1.4.4.9 world sizes, ore math, catalog
 DOCS/                    Architecture, modding guide, roadmap (dev-only)
 build.bat / test.bat     Build .tmod / run tests (not shipped in .tmod)
+Test.gui.bat             Pause-on-finish test showcase (not shipped in .tmod)
 index.html + app.js      GitHub Pages docs site (not shipped in .tmod)
 assets/banner.svg        Social preview + site hero (1200×630)
 ```
@@ -181,9 +182,10 @@ assets/banner.svg        Social preview + site hero (1200×630)
 
 ```bat
 test.bat
+Test.gui.bat
 ```
 
-Unit tests cover ore catalog (21 wiki types), **Terraria Small/Medium/Large** vein counts, feature scaling (`2 + width/4200`), and config keys. See [`DOCS/VERSIONS.md`](DOCS/VERSIONS.md). Gameplay is manual in tModLoader.
+Unit tests cover ore catalog (21 wiki types), **Terraria Small/Medium/Large** vein counts, feature scaling (`2 + width/4200`), config keys, reset/diff helpers, and preset bundles. `Test.gui.bat` lists every test first, then runs the suite with detailed console output. See [`DOCS/VERSIONS.md`](DOCS/VERSIONS.md). Gameplay is manual in tModLoader.
 
 ---
 

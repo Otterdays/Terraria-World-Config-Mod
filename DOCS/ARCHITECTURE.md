@@ -65,19 +65,19 @@ Opening config saves `Main.MenuUI.CurrentState` and restores on close.
 
 ## Settings model
 
-`WorldGenConfig` — session-scoped statics: dimensions, `UseCustom`, vein/frequency multipliers, `OreMul` from `OreConfigHelper.CreateDefaultOreMul()` (21 keys). **`ApplyDebugWorldGenPreset()`** — 1750×600, ×20 vein/frequency.
+`WorldGenConfig` — session-scoped statics: dimensions, `UseCustom`, vein/frequency multipliers, `OreMul` from `OreConfigHelper.CreateDefaultOreMul()` (21 keys). **`ApplyDebugWorldGenPreset()`** — 4200×1200 (min safe), ×20 vein/frequency.
 
 ## Tests & build
 
 ```
-Core/  ──linked──►  WorldConfigMod.Tests/  (test.bat, 23 tests)
-repo/  ──robocopy──►  ModSources/WorldConfigMod/  (excludes DOCS, Tests)
+Core/ + WorldGenConfig.cs  ──linked──►  WorldConfigMod.Tests/  (59 tests)
+repo/  ──robocopy──►  ModSources/WorldConfigMod/  (excludes DOCS, Tests, test.bat, Test.gui.bat)
                               │
                               ▼
                          WorldConfigMod.tmod
 ```
 
-Detection: Steam registry → `tModLoader.dll`. `build.bat` repo-only; excludes `DOCS/`, `WorldConfigMod.Tests/`.
+Runners: `test.bat` (minimal), `Test.gui.bat` (discovery + detailed console + pause). Detection: Steam registry → `tModLoader.dll`. `build.bat` repo-only; excludes `DOCS/`, `WorldConfigMod.Tests/`, dev batch scripts.
 
 ## [AMENDED 2026-05-19]:
 
@@ -153,3 +153,9 @@ flowchart TD
 | Legacy panel | `WorldConfigUIState.cs` | Two-column; **Try New UI →** sets `UseV2Panel` |
 
 **Safe minimum world size:** 4200×1200 (`WorldGenConfig.MinWidth` / `MinHeight`). `ApplyDebugWorldGenPreset()` uses this floor with ×20 vein/frequency — not 1750×600 (vanilla `AddGenPasses` crashes below Small).
+
+## [AMENDED 2026-05-20]: Test suite + build mirror
+
+- **59** xUnit cases: `Core/**`, pure `Common/WorldGenConfig.cs` (`WorldGenConfigTests`), Terraria vanilla specs, ore math.
+- `Test.gui.bat` — lists tests, runs detailed output, pauses (dev showcase).
+- `build.bat` robocopy excludes `test.bat` and `Test.gui.bat` from ModSources (dev-only).

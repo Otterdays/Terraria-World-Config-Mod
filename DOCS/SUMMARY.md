@@ -2,8 +2,8 @@
 
 # World Config Mod — Project Summary
 
-**Status:** Active · **Terraria 1.4.4.9** · **tModLoader 2026.3.3.0** · net8.0 · unit tests (Terraria vanilla specs) · V2 sidebar · settings persistence  
-**Last updated:** 2026-05-20 (version pin + TerrariaVanillaSpecs tests)
+**Status:** Active · **Terraria 1.4.4.9** · **tModLoader 2026.3.3.0** · net8.0 · unit tests (Terraria vanilla specs + config presets) · V2 sidebar · settings persistence  
+**Last updated:** 2026-05-20 (doc sync: 59 tests, Test.gui.bat across guides + site)
 
 ## Quick links
 
@@ -39,8 +39,9 @@ When **Use Custom Generation** is ON, controls:
 ## Build & test
 
 ```bat
-test.bat    # 51 unit tests (Core/, Terraria 1.4.4.9 specs, no game)
-build.bat   # .tmod (close tModLoader first)
+test.bat      # 59 unit tests (Core/, WorldGenConfig, Terraria 1.4.4.9 specs, no game)
+Test.gui.bat  # visible full-suite showcase: discovery + detailed pass output + pause
+build.bat     # .tmod (close tModLoader first)
 ```
 
 Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects install via registry + `tModLoader.dll`.
@@ -51,6 +52,21 @@ Requires tModLoader on Steam, launched once for `tModLoader.targets`. Detects in
 - Gems, chests, caves, biomes — see [EXPANSIONS.md](EXPANSIONS.md).
 - Custom dimensions below vanilla Small (4200×1200) cause world-gen crashes in vanilla `AddGenPasses` (hardcoded range inversions).
 - Multiplayer config sync not implemented.
+
+## [AMENDED 2026-05-20]: Test-suite audit + GUI runner
+
+| Finding | Action |
+|---------|--------|
+| `WorldGenConfig` pure config behavior had no unit coverage | Added `WorldGenConfigTests` for reset, size presets, diff counts, bundle presets, debug preset |
+| Test project linked only `Core/**` | Linked pure `Common/WorldGenConfig.cs` only; left Terraria-dependent systems out |
+| No visible “show full suite” runner | Added `Test.gui.bat` with test discovery + detailed console run + pause |
+| Build mirror docs said test scripts were excluded, but script only excluded `build.bat` | `build.bat` now excludes `test.bat` and `Test.gui.bat` from ModSources |
+
+Verification: `test.bat` and `Test.gui.bat` both pass **59/59** tests.
+
+## [AMENDED 2026-05-20]: Doc drift — test count + runners
+
+Synced stale **23** / **51** test references to **59** in `ARCHITECTURE.md`, `MODDING_GUIDE.md`, `VERSIONS.md`, `WEBSITE.md`, `index.html`, `test.bat` comment. `STYLE_GUIDE.md` lists `Test.gui.bat` as ModSources exclusion.
 
 ## [AMENDED 2026-05-20]: 10 more features — wave 2 + bundles (shipped)
 

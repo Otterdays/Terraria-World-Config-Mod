@@ -2,7 +2,7 @@
 
 # GitHub Pages — World Config public site
 
-**Last updated:** 2026-05-20 (Terraria 1.4.4.9 / tModLoader 2026.3.3.0)
+**Last updated:** 2026-05-20 (59 tests, Test.gui.bat on site + guides)
 
 ## Purpose
 
@@ -43,3 +43,7 @@ When shipping **player-visible** features:
 
 - SPA routes: home, start, features, settings, ores, install, advanced, contrib.
 - Banner moved from repo root → `assets/banner.svg` (expanded v3: meteor, moon, dungeon, hive, 11 gems, save badge).
+
+## [AMENDED 2026-05-20]: Test docs on site
+
+When test tooling changes, sync `index.html` (hero stats, Install → Tests card, Advanced repo map): **59** tests, `test.bat` + `Test.gui.bat`, `Core/` + `WorldGenConfig` coverage. `build.bat` excludes both test scripts from ModSources.
